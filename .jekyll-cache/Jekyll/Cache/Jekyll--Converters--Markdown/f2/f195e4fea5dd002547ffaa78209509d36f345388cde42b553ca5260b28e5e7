@@ -1,0 +1,75 @@
+I"�<h3 id="문제-2577-숫자의-개수">문제 2577 숫자의 개수</h3>
+
+<p>Kotlin으로 문제를 풀었다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.util.*</span>
+<span class="k">fun</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="kd">val</span> <span class="py">sc</span> <span class="p">=</span> <span class="nc">Scanner</span><span class="p">(</span><span class="nc">System</span><span class="p">.</span><span class="n">`in`</span><span class="p">)</span>
+    <span class="kd">var</span> <span class="py">multip_abc</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="n">sc</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">()*</span><span class="n">sc</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">()*</span><span class="n">sc</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">()</span>
+    <span class="kd">var</span> <span class="py">count_arr</span> <span class="p">=</span> <span class="nf">arrayOf</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">)</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">multip_abc</span> <span class="p">!=</span> <span class="m">0</span><span class="p">){</span>
+        <span class="n">count_arr</span><span class="p">[</span><span class="n">multip_abc</span><span class="p">%</span><span class="m">10</span><span class="p">]++</span>
+        <span class="n">multip_abc</span> <span class="p">/=</span> <span class="m">10</span>
+    <span class="p">}</span>
+    <span class="n">count_arr</span><span class="p">.</span><span class="nf">forEach</span><span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>multip_abc에 입력 값 3개를 다 곱해서 넣어준다.?
+count_arr는 0부터 9까지 숫자의 개수를 세주는 Array이다. IntArray(방의 개수) or Array<Int>(방의 개수)로 선언해도 별 문제는 없다.</Int></p>
+
+<p>이제 반복문으로 multip_abc의 값을 10으로 나눠  숫자의 개수를 세준다.
+그 후 0부터 1까지 숫자의 개수가 몇 개인지 출력해준다.</p>
+
+<hr />
+
+<h3 id="문제-2920-음계">문제 2920 음계</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.util.*</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">sc</span> <span class="p">=</span> <span class="nc">Scanner</span><span class="p">(</span><span class="nc">System</span><span class="p">.</span><span class="n">`in`</span><span class="p">)</span> 
+    <span class="kd">var</span> <span class="py">arr</span><span class="p">:</span> <span class="nc">IntArray</span> <span class="p">=</span> <span class="nf">intArrayOf</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">)</span>
+    <span class="kd">var</span> <span class="py">ascending</span> <span class="p">=</span> <span class="k">true</span>
+    <span class="kd">var</span> <span class="py">descending</span> <span class="p">=</span> <span class="k">true</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span> <span class="k">in</span> <span class="m">0</span><span class="o">..</span><span class="m">7</span><span class="p">){</span>
+        <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">sc</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span> <span class="k">in</span> <span class="m">0</span><span class="o">..</span><span class="m">7</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">!=</span> <span class="n">i</span><span class="p">+</span><span class="m">1</span><span class="p">){</span>
+            <span class="n">ascending</span> <span class="p">=</span> <span class="k">false</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(!</span><span class="n">ascending</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="py">a</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="m">8</span>
+        <span class="k">for</span><span class="p">(</span> <span class="n">i</span> <span class="k">in</span> <span class="m">0</span><span class="o">..</span><span class="m">7</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">!=</span> <span class="n">a</span> <span class="p">){</span>
+                <span class="n">descending</span> <span class="p">=</span> <span class="k">false</span>
+                <span class="k">break</span>
+            <span class="p">}</span>
+            <span class="n">a--</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ascending</span><span class="p">){</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"ascending"</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">descending</span><span class="p">){</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"descending"</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"mixed"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>이 문제는 음계의 c, d, e, f, g, a, b, c를 숫자로 표현한다는 점에서 숫자로 문제를 풀게 된다.
+1245678 순서대로라면 asending 반대로 87654321이라면 desending 이도저도 아니면 mixed를 출력하는 간단한 문제이다.</p>
+
+<p>그렇게 Array를 생성해준다. intArrayOf를 사용했지만 2577과 마찬가지로 intArray(), Array<Int> 어떤것을 쓰든 문제는 없다.
+참고로 저 당시에는 몰랐지만 Array<Int>(8){ sc.nextInt() }로 값을 다 채워넣을수도 있었다.
+그리고 for문의 i값을 순서대로 하여 배열의 숫자가 순서대로인지 확인하고 아니라면 반대로 확인하고 둘다 아닌지 확인하면 된다.</Int></Int></p>
+
+<hr />
+
+:ET
