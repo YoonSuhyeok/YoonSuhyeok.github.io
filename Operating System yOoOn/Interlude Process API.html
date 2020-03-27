@@ -1,0 +1,697 @@
+<html><head><nav id="top-container"><a href="../index.html">Main</a></nav><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Interlude : Process API</title><style>
+#top-container {
+	position: fixed;
+	z-index:999;
+	width:200px;
+	padding-bottom: 5px;
+	left: 30;}
+
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="8b38820f-9cd9-49ec-9f21-232005c91ecb" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="Interlude%20Process%20API/api.png"/></div><h1 class="page-title">Interlude : Process API</h1></header><div class="page-body"><h3 id="cc7511ca-ba48-4224-8ba8-6f1141963a75" class="">운영체제 동작 이해</h3><p id="5bbdadd2-eec5-465a-9765-5446d8b63568" class="">핵심 키워드: USER MODE || KERNEL MODE, SYSTEM CALL</p><p id="f82bb715-3b4a-4331-a06d-23f052dfde3c" class="">시작하실때 교수님의 말씀: 운영체제는 User,kenel 모드로 나누어져 있으며 kenel 모드엔 user가 접근하지 못한다. 또한 kenel 모드에서 user모드가 시작된다. user는 system의 기능이 사용하고 싶을 때에는 즉 하드웨어를 사용하고 싶을 때 system call를 사용한다. control은 kenel딴으로 넘어가며 system call이 끝나면 결과 완료를 user에게 넘겨준다.
+</p><hr id="80d9bbaf-70dc-44e8-a1b6-349fb0813293"/><h2 id="64068ef2-0e81-4b76-a282-ede826395c60" class="">In this interlude, we discuss process creation in <mark class="highlight-blue">Unix systems.</mark></h2><h2 id="20b2d15c-217e-41b8-b757-54dbc5eca841" class=""><mark class="highlight-blue">Unix system</mark></h2><p id="cbb9d3b1-b78e-456c-a354-497fc6ef0b41" class="">Unix presents one of the most intriguing ways to create a new process with a pair of system calls: <mark class="highlight-teal"><strong>fork()</strong></mark> and <mark class="highlight-teal"><strong>exec()</strong></mark>.
+Wait() → It can be used by a process wishing to wait for a process it has created to complete.</p><hr id="59fd4159-bc18-46cf-b56f-6d854e787c5d"/><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="03e4b6d0-6160-439b-9515-cbf380a3561c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><mark class="highlight-yellow">HOW TO CREATE AND CONTROL PROCESS
+</mark>What interfaces should the OS present for process creation and controls?
+How should these interfaces be designed to enable ease of use as well as utility?</div></figure><h2 id="3613577c-5354-4124-b796-d163428faa15" class="">The <mark class="highlight-teal">fork()</mark> system call</h2><p id="30a3e90b-8fb2-494a-aedc-6804ee05c2c7" class=""><strong>The fork() system call is used to create a new process.
+</strong><mark class="highlight-yellow">Pid: Process identifier is used to name the process if one wants to do something with the process.</mark></p><pre id="7d47bd8e-6931-4666-a678-e3e00e721798" class="code"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(int argc, char *argv[]){
+    printf(&quot;hello world (pid:%d)\n&quot;, (int) getpid());
+    int rc = fork();
+    if(rc &lt; 0){ //fork failed; exit
+        fprintf(stderr, &quot;fork failed\n&quot;);
+        exit(1);
+    } else if(rc == 0){ //child (new process)
+        printf(&quot;hello, I am child (pid:%d)\n&quot;, (int) getpid());
+    } else { // parent goes down this path (main)
+        printf(&quot;hello, I am parent of %d (pid: %d)\n&quot;,
+		rc, (int) getpid());
+    }
+    return 0;
+}
+
+실행결과 
+prompt &gt; ./p1
+hello world (pid:29146)
+hello, I am parent of 29147 (pid:29146)
+hello, I am child (pid: 29147)
+prompt &gt;
+
+prompt &gt; ./p1
+hello world (pid:29146)
+hello, I am child (pid: 29147)
+hello, I am parent of 29147 (pid:29146)
+prompt &gt;</code></pre><p id="ba6ccc8d-5c86-4180-b1b4-6592500bc9d8" class="">That means that to the OS, it now looks like there are two copies of the program p1 running, and both are about to return from the fork() system call.</p><ol id="6580fee9-fb75-4973-92d1-c9bddb37c7c2" class="numbered-list" start="1"><li>When it first started running
+The process prints out a hello world message, including PID 
+→ The process calls the fork() system call
+The OS provides as a way to create a new process </li></ol><ol id="87fd9bb7-fe24-424a-88fe-bd5359151fde" class="numbered-list" start="2"><li>else or else if가 실행된다.</li></ol><p id="d971fffe-259c-4656-a9cc-bdde2c730e23" class="">The process that is created is an (almost) exact copy of the calling process → the newly-created process (called the child) doesn&#x27;t start running at main().
+ - child process start fork() system call line next. -
+●The newly-created process isn&#x27;t an exact copy. Specifically, although it now has its own copy of the address space(i.e., its own private memory) its own registers, its own PC, and so forth, the value it returns to the caller of fork() is different.</p><p id="d1ea7cac-e14c-4a62-9415-9d2e999f2a6e" class="">여러개의 프로그램이 병렬적으로 존재시 어떤 프로그램을 실행시킬지는 Scheduler가 결정한다.</p><hr id="1a6164b5-8bb0-4f7c-8378-52b82ae1ffb0"/><p id="6a388d38-1b91-4760-98eb-e2331eee1b0a" class="">The CPU scheduler, a topic we&#x27;ll discuss in great detail soon, determines which process runs at a given moment in time.
+we cannot usually make strong assumptions about what it will choose to do, and <strong>hence which process will run first.
+</strong>This nondeterminism, as it turns out, leads to some interestin problems, particularly in muti-threaded programs.</p><hr id="26aa077e-18f6-4f3a-9acc-b15c260d8289"/><p id="2de8535d-a87d-4c0a-aa4d-3cbad2da3976" class="">❔🤗 Q. Child process 와 Parent Process는 병렬적으로 실행된다. 하지만 반복문이 아닌데 두번이 실행되는 것이 이해가 되지 않는다.
+일단 fork() 함수의 return 값을 알아본다. 그 후 다시 한번 fork()이후 instrution이 실행된다는 것을 알아두자.</p><div id="5186904d-9d6b-4185-86cd-b12007f494f0" class="column-list"><div id="a2c07c0b-0a02-440e-9505-3bfa2ce9fd20" style="width:50%" class="column"><figure id="716af7e0-2f57-4f07-adfb-d2e8fa29f05e" class="image"><a href="Interlude%20Process%20API/Untitled.png"><img style="width:480px" src="Interlude%20Process%20API/Untitled.png"/></a><figcaption>fork() system call의 반환 값</figcaption></figure></div><div id="f5a21b70-9908-409c-b518-5ce94b645375" style="width:50%" class="column"><figure id="f35f7f60-6e3d-4ea6-9cfc-76e191d43f04" class="image"><a href="Interlude%20Process%20API/Untitled%201.png"><img style="width:384px" src="Interlude%20Process%20API/Untitled%201.png"/></a><figcaption> fork() 함수가 실행된 후 child process가 생성되면 fork() 다음 instruction부터 시작된다.
+fork() 실행 후 child, parent 두 개의 프로세스는 Hello 메세지를 출력한다. 
+<strong>이게 바로 반복문이 아니지만 두 개의 프로세스가 존재하여 두번 실행되는 현상이다.</strong></figcaption></figure></div></div><div id="215f6f9c-088b-48c7-a5ef-3d5d43b7ccac" class="column-list"><div id="20a81ada-685f-4d73-a98a-5291093de587" style="width:50%" class="column"><figure id="e7cefd05-53a8-4ee7-8df2-d23245f4d881" class="image"><a href="Interlude%20Process%20API/Untitled%202.png"><img style="width:528px" src="Interlude%20Process%20API/Untitled%202.png"/></a><figcaption>단순히 두번 실행된다. 반복문은 없지만 이 프로세스가 두개라 두번이 실행된다.</figcaption></figure></div><div id="bea98225-28ef-4772-a6da-ae214106ac6f" style="width:50%" class="column"><figure id="8db4d230-d0f6-4ab6-b641-e329e41a9209" class="image"><a href="Interlude%20Process%20API/Untitled%203.png"><img style="width:480px" src="Interlude%20Process%20API/Untitled%203.png"/></a><figcaption>Hello가 8번 실행되는데 이는 곧 프로세스 수를 가리킨다. 
+프로세스 수는 2^n이다. n은 fork() 수 다.</figcaption></figure><p id="c8e97990-8235-4911-a7d2-cad4e5032b6c" class="">
+</p></div></div><div id="f126f311-e57c-4594-85e6-069465f5aa08" class="column-list"><div id="97af7f05-9859-471c-a366-250c1a9f77b6" style="width:50%" class="column"><figure id="1a14276c-0e9b-41b0-9f5a-175124e22211" class="image"><a href="Interlude%20Process%20API/Untitled%204.png"><img style="width:432px" src="Interlude%20Process%20API/Untitled%204.png"/></a><figcaption>어떤 식으로 fork()가 진행되었는지 보여준다.</figcaption></figure></div><div id="e8478cd1-4fb2-4b59-be45-70c53dd19404" style="width:50%" class="column"><figure id="b449ca4a-21e7-46be-9fd8-f42516428649" class="image"><a href="Interlude%20Process%20API/fork.gif"><img style="width:452px" src="Interlude%20Process%20API/fork.gif"/></a><figcaption>fork()가 어떤 방식으로 보여주는 gif이다.</figcaption></figure></div></div><p id="84d87f50-097e-4aa0-8a15-313d027b51a9" class="">이정도 설명이면 이해가 될 거다.</p><hr id="aab96cae-7512-4585-8ed9-830c533ecf76"/><h2 id="92a06f2a-c7df-4ad2-ac94-323605fa0671" class="">The <mark class="highlight-teal">wait()</mark> system call</h2><pre id="2268b171-8f9d-4996-a328-169d63d839c5" class="code"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(int argc, char *argv[]){
+    printf(&quot;hello world (pid:%d)\n&quot;, (int) getpid());
+    int rc = fork();
+    if(rc &lt; 0){ //fork failed; exit
+        fprintf(stderr, &quot;fork failed\n&quot;);
+        exit(1);
+    } else if(rc == 0){ //child (new process)
+        printf(&quot;hello, I am child (pid:%d)\n&quot;, (int) getpid());
+    } else { // parent goes down this path (main)
+        int rc_wait = wait(NULL);
+        printf(&quot;hello, I am parent of %d (rc_wait:%d) (pid: %d)\n&quot;,
+         rc, rc_wait, (int) getpid());
+    }
+    return 0;
+}
+
+실행 결과
+prompt&gt; ./p2
+hello world (pid:29266)
+hello, I am child (pid:29267)
+hello, I am parent of 29267 (wc:29267) (pid:29266)
+prompt&gt;</code></pre><figure id="034bf400-346b-43ff-a951-2e2a77896f08" class="image"><a href="Interlude%20Process%20API/Untitled%205.png"><img style="width:672px" src="Interlude%20Process%20API/Untitled%205.png"/></a></figure><p id="1082bdd6-f640-4286-8621-16b9a84a9af8" class="">It is quite useful for a process to wait for another process to finish.
+ // wait()는 그렇게 어렵지 않는 내용이다.
+Parent Process는 wait(NULL);로 인해서 child process가 끝날 때까지 기다리게 다음에 실행하게 된다.</p><hr id="f83ceea7-fce1-4242-aefe-751c1a91ed45"/><h2 id="a28bc1d4-2946-492a-bf9e-a976a2a40b42" class="">The <mark class="highlight-teal">exec()</mark> System call</h2><p id="d551538c-32ec-4a77-b05c-8bf5bae0b7a6" class=""><strong>This systems call is useful when you want to run a program that is different from the calling program.</strong></p><pre id="43de61cd-7a84-4bb4-9f32-487afc7b6c93" class="code"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(int argc, char *argv[]){
+    printf(&quot;hello world (pid:%d)\n&quot;, (int) getpid());
+    int rc = fork();
+    if(rc &lt; 0){ // fork failed; exit
+        fprintf(stderr, &quot;fork failed\n&quot;);
+        exit(1);
+    } else if(rc == 0){ //child (new process)
+        printf(&quot;hello, I am child (pid:%d)\n&quot;, (int) getpid());
+        char *myargs[3];
+        myargs[0] = strdup(&quot;wc&quot;); // program: &quot;wc&quot; (word count) wc는 명령어
+        myargs[1] = strdup(&quot;p3.c&quot;); // argument: file to count  p3.c는 현재 프로그램
+        myargs[2] = NULL; /* marks end of array execvp는 자신에게 주어지는 string 
+			    끝에 NULL로 존재해달라고 요구 */
+        execvp(myargs[0], myargs); // runs word count // execvp = exec family.
+        printf(&quot;this shouldn&#x27;t print out&quot;);
+    } else {
+        int rc_wait = wait(NULL);
+        printf(&quot;hello, I am parent of %d (rc_wait:%d) (pid:%d)\n&quot;,
+                rc, rc_wait, (int) getpid());
+    }
+    return 0;
+}
+실행 결과
+prompt&gt; ./p3
+hello world (pid:29383)
+hello, I am child (pid:29384)
+      29     107     1030    p3.c
+hello, I am parent of 29384 (wc:29384) (pid:29383)
+prompt&gt;</code></pre><p id="87e18fef-6f1a-4214-9d64-a238c101380a" class="">Given the name of an executable, and some arguments, exec() loads code ( and static data) from that executable and overwrites its current code segment (and current static data) with it →
+The heap and stack and other parts of the memory space of the program are re-initialized →
+Then the OS simply runs that program, passing in any arguments as the argv of that process.</p><p id="d7bddb29-c89b-4030-97d9-2ab2cecbf4e4" class="">🕳<strong>Thus, exec() does not create a new process; rather, it transforms the currently running program into a different running program.</strong></p><p id="3d58f12a-b69c-48af-9532-a6159e5e4e05" class=""><mark class="highlight-purple">often you want to run a different program; exec() does just that.
+</mark>In this example, the child process calls execvp() in order to run the program wc, which is the word counting program. In fact, it runs wc on the source file p3.c, thus telling us how many lines, words, and bytes are found in the file. ← 소스 코드 안에 다 적혀 있는 내용이다.</p><hr id="5b258eed-d14f-4525-b536-a673e4863b77"/><h2 id="801e6902-5f80-4718-8207-9cbc1ceb682a" class="">Process 배울 때 우리는 배웠다. ༼ つ ◕_◕ ༽つ
+Virtualization of CPU = <mark class="highlight-red">mechanism </mark>+ <mark class="highlight-blue">policy</mark>란 사실을 🤔
+이제 그 중 <mark class="highlight-red">mechanism</mark>에 대해 배운다. 상당히 혼미할테니 😣!</h2><hr id="5d87285a-e2cf-4251-a62c-6038c32d23a6"/><h2 id="33392706-5dbe-457d-893e-68ca7e3d7c10" class=""><mark class="highlight-pink">Mechanism</mark>: Limited Direct Execution</h2><h3 id="94e53050-137e-4c98-94d8-64da6a9ccb85" class="">Introduction</h3><ul id="fffa001d-d981-41f4-9ff4-a2f2f92e93fb" class="bulleted-list"><li>By time sharing the CPU, virtualization is achieved. THEN..</li></ul><ul id="5ca6367c-2fb6-4299-82bf-263f1e982335" class="bulleted-list"><li>Performance: how can we implement virtualization without adding excessive overhead to the system?</li></ul><ul id="71a5a948-5a92-477b-a53b-3e66fa7a9576" class="bulleted-list"><li>Control: how can we run process efficiently while retaining control over the CPU?</li></ul><p id="1f6d7c2b-a025-487d-adf3-081afc83e561" class=""><strong><mark class="highlight-red">❓ Obtaining high performance while maintaining control is thus one of the central challenges in building an operating system.</mark></strong></p><h3 id="b4663c68-5292-4809-95c2-8a55ab767802" class="">❤ Direct execution</h3><ul id="ae7539f1-0cb9-46c7-a5a7-3d49a5ec52a2" class="toggle"><li><details open=""><summary>Just run the program directly on the CPU.</summary></details></li></ul><ul id="0ac85acb-84f8-45bc-b6f7-7c73919cf891" class="toggle"><li><details open=""><summary>Thus, when the OS wishes to start a program running, it creates a <mark class="highlight-purple">process entry</mark> for it in a process list, allocates some memory for it, loads the program code into memory, locates its <mark class="highlight-blue">entry point</mark> (i.e., the <mark class="highlight-blue">main()</mark> routine or something similar), jumps to it. and starts running the user&#x27;s code.</summary></details></li></ul><p id="24c7ea03-bb62-48d5-87c0-d2b7afad8e6a" class=""><em>But Direct execution gives rise to </em><mark class="highlight-orange"><em>a few problems</em></mark><em> in our quest to virtualize the CPU.</em></p><h3 id="9fe4814d-db6d-451f-b534-04ea28cda0df" class="">🔆 <strong>Questions</strong></h3><ol id="e95b0cd7-dece-4ef9-bf61-e8cfe3e0491b" class="numbered-list" start="1"><li>Simple thing: if we just run a program,<strong><mark class="highlight-red"> how can the OS make sure the program doesn&#x27;t do anything that we don&#x27;t want it to do while running it efficiently?</mark></strong></li></ol><ol id="89988858-e2da-4a9e-bf1e-ebf02aeb6f53" class="numbered-list" start="2"><li>when we are running a process, how does the operating system stop it from running and switch to another process<em><strong>, thus implementing the </strong></em><em><strong><mark class="highlight-orange">time-sharing </mark></strong></em><em><strong>we require to virtualize the CPU?</strong></em><figure id="888b45c5-347b-4f87-ad13-db6398acbcad" class="image"><a href="Interlude%20Process%20API/Untitled%206.png"><img style="width:518px" src="Interlude%20Process%20API/Untitled%206.png"/></a><figcaption>위에서부터 아래로 실행되니 위에서 아래로 읽어주자</figcaption></figure></li></ol><p id="3e19cee7-fa3f-4e63-a81e-db99060044ca" class="">🤢 우욱 너무 어려워</p><hr id="e1fd6bec-0f2d-4630-831a-d1d66eb7bc19"/><h2 id="f16337a4-6d67-49e9-bb34-1ca6b9a76eee" class="">💥Problem #1: restricted Operations</h2><blockquote id="f7db5944-f19b-4c4f-9332-398832778b6a" class=""><strong>Direct execution has the obvious advantage of being fast;</strong> The program runs natively on the hardware CPU and thus executes as quickly as one would expect. 
+<mark class="highlight-red">But running on the CPU introduces a problem</mark>: 
+1. what if the process wishes to perform some kind of restricted operation?</blockquote><h3 id="da9b99ae-da47-40e4-b515-8c08d3daee7c" class="">User Mode</h3><p id="b2b6dae4-68e1-4307-8707-1f9c7d495cf3" class="">Code that runs in user mode is restricted in what it can do.</p><h3 id="5ed2b59f-4b30-48be-bab6-bb7203512367" class="">Kernel mode</h3><p id="5fc0b09e-a6c9-46a8-9d5c-bbf99026ba21" class="">In which the operating system runs.
+In this mode, code that runs can do what it likes, including privileged operations such as issuing I/O requests and executing all types of restricted instructions.</p><h3 id="535d4a7e-8ddd-4bc1-a12c-a67f97203833" class="">💥What should a program to when it wishes <em><mark class="highlight-red">to perform some kind of privileged operation?</mark></em></h3><p id="fdc4ccc7-b300-4cd6-ada6-65e54829c7e8" class="">→ To enable this, virtually all modern hardware provides the ability for user programs <strong>to perform a system call. 
+</strong>System call: system calls allow the kernel to carefully expose certain key pieces of functionality to user programs.
+<em>(such as accessing the file system, creating and destroying processes, communicating with other process, and allocating more memory.)</em></p><h3 id="e0932dcc-d756-4e6a-b90e-d2620079bc8c" class="">🤩<mark class="highlight-orange">To execute a system call</mark>, a program must execute <mark class="highlight-purple">a special trap instruction.</mark></h3><p id="77e05439-2082-42eb-befc-643387204f43" class="">This instruction jumps into the kernel and <strong>raises the privilege</strong> level <strong>to kernel mode</strong>; once in the kernel, the system can now perform whatever privileged operation are needed.</p><h3 id="c873b02e-d394-4689-8d59-615e03b978af" class="">✔When finished, <mark class="highlight-blue">the OS calls a special </mark><mark class="highlight-blue"><em><strong>return-from-trap</strong></em></mark><mark class="highlight-blue"><em> </em></mark><mark class="highlight-blue">instruction,</mark></h3><p id="b453ae4d-aa03-485d-a95b-2859ca85648b" class="">which returns into the calling user program while simultaneously reducing <strong>the privilege level back to user mode.</strong></p><p id="045941de-c70f-4f9b-a412-cdd46f2edf0c" class="">The hardware needs to be a bit careful when executing a trap, in <em>that it must make sure to save</em> enough of the caller&#x27;s <strong>registers</strong> in <strong>order to be able to return correctly when the OS issues the return-from-trap instruction.</strong></p><hr id="d4839ca4-fcc3-400c-a0b7-05a1e7711d92"/><h2 id="2c1c6e5e-b8fb-4dea-b045-4ade47d32c23" class="">Trap table</h2><p id="22194f68-b81f-4483-a72f-af2a357aade3" class=""><mark class="highlight-red"><strong>Q: How does the trap know which code to run inside the OS?</strong></mark></p><p id="3b9f1df1-5196-490b-9500-68ed5deca57e" class=""><mark class="highlight-blue">A: The kernel sets up a trap table at boot time.</mark></p><p id="e712e25a-cf1f-4848-b454-5ae7054a1aa8" class=""><em>When the machine boots up, it does so in privileged mode, and thus is free to configure machine hardware as need be. 
+</em>One of the first things the OS does is to tell the hardware what code to run when certain exceptional events occur.</p><h3 id="1cda23c0-ccd3-4189-bb37-62842b792322" class="">The OS informs the hardware of the locations of <mark class="highlight-orange">trap handlers.</mark></h3><p id="e39f13e9-c3db-4a2a-8cd2-cc486ede326b" class="">Once the hardware is informed, it remembers the location of handlers and thus the hardware knows what to do (i.e., what code to jump to) when system calls and other exceptional events take place.</p><p id="4314059a-c743-433c-8582-76c253ac755d" class=""><strong>System-call number: to specify the exact system call, a system call number is usually assigned to each system call.</strong></p><hr id="7c4f81ae-fe71-42e6-a5a7-66fc2d318b3f"/><p id="0a826cde-2a7e-4dd5-8045-f8dd390fd44e" class="">The user code is thus responsible for placing the desired system-call number in a register or at a specified location on the stack→ the OS, when handling the system call inside the trap handler, examines this number, ensures it is valid, and, if it is, executes the corresponding code.</p><p id="1a300ae9-3339-40e5-b951-bb89057d9429" class="">This level of indirection serves as a form of protection; user code cannot specify an exact address to jump to, but rather mus request a particular service via number.</p><hr id="9d1c6652-c609-44b3-ab24-bc31d0675df1"/><figure id="9f6c43f4-ebdf-41a6-8ca8-b4618e0f109a" class="image"><a href="Interlude%20Process%20API/Untitled%207.png"><img style="width:480px" src="Interlude%20Process%20API/Untitled%207.png"/></a></figure><h3 id="a59f7abc-7a7b-4864-8666-c324537e9b6c" class="">Two phases in the limited direct execution protocol.</h3><p id="a964c6fe-ceee-4902-acde-82418f05b6b7" class=""><strong>First phase</strong>: the kernel initializes the trap table, and the CPU remembers its location.</p><p id="4d5b7c6b-c91f-4ba5-98ea-5cf035940062" class=""><strong>Second phase: </strong>The kernel sets up a few things(e.g., allocating a node on the process list, allocating memory) before using a return-from-trap instruction to start the execution of the process; this switches the CPU to user mode and begins running the process.</p><p id="f429ffa0-1e19-431e-867f-9b9406107bae" class="">When the process wishes to issue a system call, it traps back into the OS, which handles it and once again returns control via <strong>a return-from-trap to the process.</strong></p><p id="d6110bee-cb76-4ec2-92b5-403b623019c3" class="">If a process is running on the CPU, this by definition means the OS is not running.</p><hr id="50aaf19f-04b7-4450-9024-0293452ed506"/><h2 id="05e09bf0-dc24-44e0-8f8f-4c5c69e6a54f" class="">💥Problem #2: Switching Between Process</h2><h3 id="873e0c9e-f784-4793-bf87-105dd04741b7" class=""><mark class="highlight-red">💥Q: How can the operating system regain control of the CPU so that it can switch between processes?</mark></h3><p id="1b12572d-0fa3-4388-accf-62982dc15804" class=""><strong><mark class="highlight-blue">A: cooperative approach</mark></strong></p><p id="c0720163-73d3-409c-b68a-3e5b195525cd" class=""><strong><mark class="highlight-blue">cooperative approach
+</mark></strong>In this style, <strong>the OS trusts the processes of the system to behave reasonably.</strong> Processes that run for too long are assumed to periodically give up the CPU so that the OS can decide to run some other task.</p><p id="17b5b186-b33e-41eb-aadc-f1c298b8a162" class=""><mark class="highlight-red">Q: How does a friendly process give up the CPU in this utopain world?</mark></p><p id="17ff4176-8e54-44ed-bddd-ff75d40c0283" class=""><mark class="highlight-blue">A: Most processes transfer control of the CPU to the OS by making system calls.</mark></p><p id="3370b280-7a29-4daa-88dd-7f8d708918e0" class="">Systems like this often include an explicit <strong>yield </strong>system call, which des nothing except to transfer control to the OS so it can run other processes.</p><p id="2b2c830f-d149-4556-a917-5a394cd8ac89" class=""><mark class="highlight-orange">💥Thus, in </mark><mark class="highlight-orange"><strong>cooperative </strong></mark><mark class="highlight-orange">scheduling system, the OS </mark><mark class="highlight-orange"><strong>regains control</strong></mark><mark class="highlight-orange"> of the CPU by waiting for a system call or an illegal operation of some kind to take place.💥</mark></p><hr id="787d7f2c-8db1-4719-8e85-b6ac0f5f7845"/><h2 id="3891584c-300b-4dbd-88b3-e2b4003841de" class="">A Non-Cooperative Approach: The OS Takes Control</h2><p id="bcc1cb64-63cc-4aa2-b930-2af8f87f8071" class=""><mark class="highlight-red">Q: How can the OS gain control of the CPU even if processes are not being cooperative? What can the OS do to ensure a rogue process does not take over the machine?</mark></p><p id="41634038-09a5-49a2-96af-80ff902b7207" class=""><mark class="highlight-blue">A: A timer interrupt</mark></p><p id="8e9bb555-98c2-4475-897a-4b6483a7f7be" class="">A timer device can be programmed to raise an interrupt every so many millisecond; when the interrupt is raised, the currently running process is halted, and a pre-configured <strong>interrupt handler</strong> in the OS runs.</p><p id="90747d08-5765-473a-a151-8fe7c4ecc428" class="">TIP: The addition of a timer interrupt gives the OS the ability to run again on a CPU even if processes act in a non-cooperative fahion. Thus, this hardware feature is essential in helping the OS maintain control of the machine.</p><h3 id="a1bd1031-a4fe-43bf-a408-165c6bf7316b" class="">Important decision</h3><p id="b9096d40-34ff-4c93-8751-d6bd15b99e48" class="">Whether to continue running the currently-running process or switch to a different one.
+This decision is made by a part of the operating system known as the scheduler.</p><h3 id="bb444c65-c29b-4851-801c-fbb3c8577271" class="">Context switch</h3><p id="78bef7d3-1810-4263-be21-a2356bb7db60" class="">All the OS has to do is save a few register values for the currently-executing process (onto its kernel stack, for example) and restore a few for the soon-to-be-executing process(from its kernel stack).
+
+By doing so, the OS thus ensures that when the return-from-trap instruction is finally executed, instead of returning to the process that was running, the system resumes execution of another process.</p><p id="8c2aaf8c-3899-4a7a-925d-1a074a83d105" class="">A few registers: General purpose registers, PC, the kernel stack pointer...</p><figure id="6314bcd7-0bd1-4598-908d-f98922a392bc" class="image"><a href="Interlude%20Process%20API/Untitled%208.png"><img style="width:663px" src="Interlude%20Process%20API/Untitled%208.png"/></a></figure><hr id="3afeea48-8c77-4914-8fc1-a1fc5ad8ab03"/><h3 id="83d8729b-9ad1-4db5-8e38-d1fa57f0667c" class="">요약</h3><p id="721ae3ee-d5b4-486d-8868-20939f315020" class="">CPU 가상화를 구현하기 위한 핵심적인 저수준 기법에 관해 설명한 챕터. 이 기법을 제한적 직접 실행이라고 한다.
+아이어디는 간단: CPU에서 실행하고 싶은 프로그램을 실행시킨다. 그러나 OS는 운영체제가 CPU를 사용하지 못하더라도 프로세스의 작업을 제한할 수 있도록 하드웨어를 셋업해야한다.</p><p id="cbd8cf11-8d1e-450e-a253-2868704aad47" class="">일상 생활에서 이러한 방법이 있다. 아이가 있다면 방에 아기 보호 장치를 설치한다. 위험한 물건이 있다면 서랍에 넣어두고 잠그거나 하는 일들이다. 이러면 아이에게 위험한 물건들을 막아 놓아 아이는 자유롭게 방을 안전하게 돌아다니게 할 수 있다. 이렇듯 운영체제는 CPU에게 안전 장치를 준비해 놓는다.</p><p id="742fa622-4389-4c5a-8c01-671215216bcd" class="">우선 부팅할 때 트랩 핸들러 함수를 셋업하고 인터럽트 타이머를 시작 시키고 그런 후에 제한 모드에서만 프로세스가 실행 하도록 한다. 이러면 OS는 프로세스를 효율적으로 실행할 수 있다.</p><p id="ad0515c5-f2ba-4c52-a1d2-438d35fb4a57" class="">다음 챕터에서는 특정 시점에 어떤 프로세스를 실행시켜야할까란 질문에 스케쥴러가 답하는 질문에 배운다.</p><hr id="8c43102e-b1d4-4058-ad34-0c94bde07f17"/><p id="98056d0d-adb5-49ad-87fe-fe7173961196" class="">✨아이콘 제작자 <strong>Smashicons</strong></p><figure id="167a30d8-1b17-4dfa-8f32-f282d8c4b13e"><div class="bookmark source"><a href="https://www.flaticon.com/kr/authors/smashicons">Smashicons 디자인의 무료 벡터 아이콘</a><br/><a class="bookmark-href" href="https://www.flaticon.com/kr/authors/smashicons">https://www.flaticon.com/kr/authors/smashicons</a></div></figure><p id="999c660b-a582-4cb1-910d-a7addfa1653a" class="">👀 출처 : Geeks for Geeks</p><figure id="8a0d9225-eca9-477f-82ab-5ead9e0214e9"><div class="bookmark source"><a href="https://www.geeksforgeeks.org/">GeeksforGeeks | A computer science portal for geeks</a><br/><a class="bookmark-href" href="https://www.geeksforgeeks.org/">https://www.geeksforgeeks.org/</a></div></figure><p id="942ffa21-22e0-4079-8b16-3785201f3578" class="">
+</p></div></article></body></html>
