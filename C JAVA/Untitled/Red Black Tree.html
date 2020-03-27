@@ -1,0 +1,722 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Red Black Tree </title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="c06175a3-4143-42f0-af99-7aa2fe7daa65" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">👿</span></div><h1 class="page-title">Red Black Tree </h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Sort &amp; Search</span></td></tr></tbody></table></header><div class="page-body"><div id="e48a226e-d30a-4810-a2ee-11f03d0377b8" class="column-list"><div id="ca460986-8229-47b6-8857-e1c67439b4a1" style="width:50%" class="column"><figure id="cad9b94e-9c7f-433c-b419-39f3f389c875" class="image"><a href="Red%20Black%20Tree/Untitled.png"><img style="width:483px" src="Red%20Black%20Tree/Untitled.png"/></a></figure></div><div id="e864b2fa-ff47-4bb5-b372-ccf066587cfd" style="width:50%" class="column"><p id="bc296a82-ec26-446e-a15c-e142df48069f" class=""> 이진 탐색 트리는 균형있게 자라지 못하는 경우가 많이 있다. 기형적인 이진 탐색 트리는 검색 효율을 심각하게 저하시킨다.  왼쪽 이미지와 같이 저런 식으로 되면 성능 저하가 발생된다.
+
+Red Black Tree는 이러한 문제에 대한 답을 갖고 있는 이진 탐색 트리이다. 이진 탐색 트리는 다른 점이라면 노드를 빨간색 또는 검은색으로 표시한다는 사실 정도가 전부다.</p></div></div><h3 id="4ff67de8-79bf-45d5-8394-d1a7104d4252" class="">어떻게 RED BLACK TREE는 밸런스를 맞출까?</h3><pre id="8ea9c2a9-bf4b-4ba6-b99f-223e665ab6bc" class="code"><code><mark class="highlight-gray">	</mark><mark class="highlight-brown">30             30               30       
+       / \            /  \             /  \
+     20  NIL         </mark><mark class="highlight-red">20</mark><mark class="highlight-brown">   NIL         </mark><mark class="highlight-red">20</mark><mark class="highlight-brown">   NIL
+    / \             / \              /  \   
+  10  NIL          10  NIL          </mark><mark class="highlight-red">10</mark><mark class="highlight-brown">  NIL  
+Violates          Violates        Violates
+Property 4.      Property 4       Property 3 -&gt; 10과 20은 빨간 노드라 규칙에 어긋난다.
+						 그렇기에 회전 시킴 (아래 나옴 뭔지)
+																							3번째에서 20 적힌 노드를 Right-Rotate를 한다.
+
+Following are different possible Red-Black Trees with above 3 keys
+         20                           20
+       /   \                        /   \
+     10     30                    </mark><mark class="highlight-red">10     30</mark><mark class="highlight-brown">
+    /  \   /  \                 /  \    /  \
+ NIL  NIL NIL NIL             NIL  NIL NIL NIL
+
+솔직히 지금 봐선 모를테지만 아래 읽다가 분명히 이해하지 못 하는 부분이 온다.
+그 때 다시 이걸 다시 읽어보면 소름이 돋을 것이다.</mark></code></pre><pre id="bfd6ecd1-a6a6-4b22-be03-7ad29b270fec" class="code"><code>typedef struct tagRBTNode{
+	struct tagRBTNode* Parent;
+	struct tagRBTNode* Left;
+	struct tagRBTNode* Right;
+// 노드의 색을 나타내는 Color 필드, RED 아니면 BLACK의 값을 저장할 수 있다.
+	enum { RED, BLACk } Color;
+
+	ElementType Data;
+} RBTNode;</code></pre><p id="6a6a7d38-45c3-4ae0-a34b-c03e0c09e225" class=""> 추가된 코드는 Color 필드와 Parent 포인터다. Parent포인터는 삽입과 삭제 연산을 수행할 때 요긴하게 쓰인다.</p><h3 id="48526e77-cbd5-43b5-a578-ee190756f6f4" class="">레드 블랙 트리가 균형을 유지하는 비결</h3><p id="9325e653-b45a-45fb-8df3-44a26484cfdc" class="">(각 사이트, 각 책마다 규칙의 수는 다르지만 통일되게 들어가는 것이 있다.)</p><ol id="68efb621-dc38-4287-8107-2102718a7b70" class="numbered-list" start="1"><li>모든 노드는 검은색, 빨간색이다.</li></ol><ol id="f3974e70-af59-4357-abf6-98f395dfec97" class="numbered-list" start="2"><li>루트 노드는 검은색</li></ol><ol id="3ba42816-1e3f-414e-96fe-e99d84cb6aaa" class="numbered-list" start="3"><li>잎노드는 검은색( NIL로 표현되는데 <mark class="highlight-orange">NULL Left</mark>란 뜻이다.)</li></ol><ol id="b4d110db-0393-4593-a76d-11dec103e5b0" class="numbered-list" start="4"><li>빨간 노드의 자식들은 모두 검은색(<mark class="highlight-orange">빨간 노드는 연달아 있을 수 없다는 뜻</mark>)</li></ol><ol id="c18f39f3-5169-4b11-99fc-36a35cdf7f5c" class="numbered-list" start="5"><li>모든 경로의 검은색 노드의 수가 동일하다.</li></ol><p id="f1ae4b35-f13f-4921-a4d9-a38c5e41b99a" class="">
+</p><p id="e6f134a8-0f34-4e6d-8c83-54db9f1f94bd" class="">이 책에선 다음 규칙을 따른다. 사실 위와 같은 말</p><ol id="063baef3-35d2-4ce0-acda-1b5b84b80f8f" class="numbered-list" start="1"><li>모든 노드는 <mark class="highlight-red">빨간색</mark> or <strong>검은색</strong>이다.</li></ol><ol id="a6aabdf7-5329-46bb-808a-32f8c9da0801" class="numbered-list" start="2"><li>루트 노드는 <strong>검은색</strong>이다.</li></ol><ol id="bbc1bb56-773f-4038-b5b9-68a3a1f61dd2" class="numbered-list" start="3"><li>잎 노드는 <strong>검은색</strong>이다.</li></ol><ol id="9e2b0c3b-d492-47df-a926-a52ba94980b9" class="numbered-list" start="4"><li><mark class="highlight-red">빨간 노드</mark>의 <strong>자식들은 모두 검은색</strong>이다. 검은색 노드의 자식이 빨간색일 필요는 없다.</li></ol><ol id="a724940a-0d67-47a6-b05d-2bc8c1395f32" class="numbered-list" start="5"><li>루트 노드에서 모든 잎 노드 사이에 있는 검은 색 노드의 수는 모두 동일하다.</li></ol><p id="e1423a40-770b-45c8-bf53-4f69ddd7e465" class="">
+</p><p id="6351cbc1-a3d8-4672-8473-7d38245729f6" class="">중요한 건 위 조건들을 만족하게 되면 루트노드부터 최장 거리가, 최단 거리의 두 배보다 항상 적다.
+  5가지 조건 만족 시 ⇒최장 경로 거리 &lt; 최단 경로 거리*2
+RED BLACK TREE 자체는 기형적인 이진 탐색 트리를 바로 잡기 위해 있다. 이 말은,즉 최장 경로의 거리를 짧게 만드는 것이 목표다. 최장 경로가 기형적으로 길어지면 탐색시 성능 저하가 발생하기 때문이다. 레드 블랙트리는 삽입, 삭제, 검색시 최악의 경우 시간 복잡도가 트리의 높이에 따라 결정된다.
+
+ 다시 &quot;4.규칙인 빨간 노드는 연달아 올 수 없다&quot;로 <strong>최장 경로 거리 &lt; 최단 경로 거리*2</strong>를 설명할 수 있다.  <mark class="highlight-blue">만약 최단 경로를 검은색 노드만으로 이루어져있다고 가정했을 때</mark>, 최장 경로는 빨간 노드와 검은 노드를 번갈아 써야할 것이다. 왜냐면 빨간 노드는 연달아 올 수 없기 때문이다. 그리고 검은 노드를 또 연달아 쓸 수 없는 이유(연달아서 엄청 긴 최장거리를 만들어보자란 생각이 들수도 있지만 안된다.)는 모든 경로의 검은 노드의 수가 동일하기 때문이다. 그렇기에 빨간, 검은 노드가 번달아 사용되어야 최장거리이다. 계산해보면 최장 경로가 최단 경로의 두배 이상이 될 수 없다.</p><figure id="f79141ac-0455-40c7-b203-840bd84754d4" class="image"><a href="Red%20Black%20Tree/5EEF44E1-0357-4C20-8311-133BE231BD13.jpeg"><img style="width:720px" src="Red%20Black%20Tree/5EEF44E1-0357-4C20-8311-133BE231BD13.jpeg"/></a></figure><p id="d3d65130-d7cc-4a7d-a307-09f084ec3297" class="">위 그림은 RED BLACK TREE의 예이다. 규칙을 하나씩 따져보자. 
+모든 노드가 검은색 or 빨간색으로 칠해져 있다.  OK
+루트 노드와 모든 잎 노드(NIL) 모두 검은색이다. OK
+루트에서 각 잎 노드 사이의 검은 색 노드가 3개로 일정하다. OK (5번 규칙을 말하고 있음)</p><h3 id="56c3aa9b-89f2-438f-9a28-060f0a7be8d0" class="">기본 연산</h3><p id="fb46cf78-d06d-4482-95d2-89f017470278" class="">탐색은 이진 탐색 트리에서와 동일하다. 하지만 삽입과 삭제는 다르다.</p><h3 id="67842adc-c951-44b5-9154-83e48035c81e" class="">회전</h3><p id="4b105c81-48d4-4c22-9180-bc704fc582de" class="">이걸 진짜 머리에 인지하고 해야 다음 내용들이 이해하기 쉽다. 결국 계속 봐야할 뿐이다.</p><p id="f8d7c452-a385-4578-a406-f9a356ef9410" class="">본격적으로 삽입과 삭제 연산의 뒤처리에 대해 알아보기 전에 공부해야할 것이 있다.
+이 레드 블랙 트리의 기초 연산의 기초 초식인 회전(Rotate)이다. <strong>회전은 부모-자식 노드의 위치를 서로 바꾸는 연산이다.</strong> 회전의 방향에 따라 우회전(Right-Rotate), 좌회전(Left-Rotate)라고 말한다.</p><figure id="4de1db77-7138-4fca-be5c-fa3c76692b9c" class="image"><a href="Red%20Black%20Tree/89D96379-9241-4F18-86BB-05A8F9706D42.jpeg"><img style="width:1492px" src="Red%20Black%20Tree/89D96379-9241-4F18-86BB-05A8F9706D42.jpeg"/></a></figure><p id="e6789c98-aaea-4356-93b1-504da3d9314f" class="">이진 탐색 트리의 특성: 왼쪽 자식 노드 &lt;부모 노드, 오른쪽 자식 노드 &gt; 부모 노드</p><ul id="bdba5072-3fc7-4b43-9523-287ef3f56abc" class="bulleted-list"><li>우회전을 할 때에는 <mark class="highlight-teal">왼쪽 자식 노드의 오른쪽 자식 노드</mark><strong><mark class="highlight-teal">(6)</mark></strong><mark class="highlight-teal">를</mark> <mark class="highlight-purple">부모 노드의 왼쪽 자식 노드(8)</mark>와 연결한다. 8에 6을 연결하고 우회전한다.  위 이미지를 보면 트리가 우회전하고 난 후 노드 6이 노드 8의 왼쪽 자식이 되었다.</li></ul><ul id="540f3728-59cd-4885-8f56-8aaee2689282" class="bulleted-list"><li>좌회전할때에는 오른쪽 자식 노드의 왼쪽 자식 노드를 부모 노드의 오른쪽 자식으로 연결한다.
+위 이미지를 보면 좌회전해서 노드 6이 다시 노드 5의 오른쪽 자식이 되었다.<figure id="cd94af7e-c6b6-4883-9b04-9cb9962ab43c" class="image"><a href="Red%20Black%20Tree/KakaoTalk_20200107_032944938.gif"><img style="width:2388px" src="Red%20Black%20Tree/KakaoTalk_20200107_032944938.gif"/></a></figure></li></ul><pre id="6ea68735-c460-4bcc-b520-23baf917efef" class="code"><code>void RBT_RotateRight(RBTNode** Root, RBTNode* Parent){
+	RBTNode* LeftChild = Parent-&gt;Left;
+
+	Parent-&gt;Left = LeftChild-&gt;Right;
+
+	if(LeftChild-&gt;Right != Nil )
+		LeftChild-&gt;Right-&gt;Parent = Parent;
+
+	LeftChild-&gt;Parent = Parent-&gt;Parent;
+
+	if(Parent-&gt;Parent == NULL)
+		(*Root) = LeftChild;
+	else{
+		if(Parent == Parent-&gt;Parent-&gt;Left)
+			Parent-&gt;Parent-&gt;Left = LeftChild;
+		else
+			Parent-&gt;Parent-&gt;Right = LeftChild;
+	}
+	LeftChild-&gt;Right = Parent;
+	Parent-&gt;Parent = LeftChild;
+}</code></pre><h3 id="5696e298-f844-400e-aba5-126e10d164b4" class="">삽입</h3><p id="942986ec-867c-4759-bd76-b66b7f74e28f" class="">이진 탐색을 통해 삽입할 장소(노드)를 찾고 여기에 새 노드를 자식 노드를 연결한다는 점에서 이진 탐색 트리와 닮았다.
+ 레드 블랙 트리에 새 노드가 삽입되고 나면 이 노드를 빨간색으로 칠한 다음 양쪽 자식에 NIL노드를 연결해야한다. RBT_InsertNode()함수는 먼저 이진 탐색을 통해 새 노드를 트리에 삽입(RBT_InsertNodeHelpoer())한 다음, 이 노드를 빨간색으로 칠하고 양쪽 자식에 NIL노드를 연결한다. 마지막엔 무너진 레드블랙 트리 규칙을 복구한다.(RBT_RebuildAfterInsert())</p><pre id="dc15ff32-d050-40f9-ba99-c7bf0f095636" class="code"><code>void RBT_InsertNode(RBTNode** Tree, RBTNode* NewNode){
+	RBT_InsertNodeHelper(Tree, NewNode); // 이진 탐색트리의 노드 삽입 수행
+
+	NewNode-&gt;Color = RED;
+	NewNode-&gt;Left = Nil;
+	NewNode-&gt;Right = Nil;
+
+	RBT_RebuildAfterInsert(Tree, NewNode);
+}</code></pre><p id="5bdd8aa9-1dfe-4360-8399-d8af9e9fabbb" class="">원래대로라면 Nil 노드를 생성해서 NewNode에 연결해야했었다.</p><pre id="9ce858ad-8aa8-45f5-ba05-a8969b279342" class="code"><code>RBTNode* LeftNil = RBT_CreateNode(0);
+RBTNode* RightNil = RBT_CreateNode(0);
+
+NewNode-&gt;Left = LeftNil;
+NewNode-&gt;Right = RightNil;</code></pre><div id="a072620b-845b-4462-b806-4529cf5fee7b" class="column-list"><div id="3b41804c-65b7-406b-b9c6-15e011432200" style="width:50%" class="column"><figure id="ec75a088-c678-4efd-add5-6d27e7cdb732" class="image"><a href="Red%20Black%20Tree/267EEE5D-94D8-4AA8-B5F5-BC94228140A1.jpeg"><img style="width:1372px" src="Red%20Black%20Tree/267EEE5D-94D8-4AA8-B5F5-BC94228140A1.jpeg"/></a></figure></div><div id="d6b1baf8-9bd4-4096-83e3-a653f4414b51" style="width:50%" class="column"><p id="c2d10bc5-e615-4631-82fd-20958402c3a5" class="">Nil노드를 새 노드 양쪽 자식에 그냥 연결하고 있다. 왜냐하면 Nil노드가 구현의 편의를 위해 도입된 개념일뿐 실제로 데이터를 담기  위해 사용되는 것이 아니기 때문이다. 그리고 저장공간을 여러개 만들어쓰면 낭비이기때문에 Nil노드를 하나만 만들어 전역으로 사용해 동일한 Nil노드를 사용한다.</p></div></div><p id="cbb8638a-786b-4a0b-b2c1-a09e60865510" class="">복구하는 작업에서 1번 규칙(모든 노드 검, 빨), 3번 규칙(잎 노드는 검)은 위배되지 않는다.
+5번 규칙(모든 경로의 검은 노드의 수가 동일)은 위배되지 않는다. 그 이유는 새 노드를 삽입할 때 마다 검은색 NiL 노드를 자식 노드로 덧붙이기 때문이다. → 새 노드(빨간색)을 삽입 할 때에는 부모 노드에 연결되어있던 NIL 노드(검은색)을 떼어내고 그자리여 연결하기때문에 루트 노드와 모든 잎 노드 사이에 검은 색 노드의 수는 동일하다. 
+
+위반 될 수 있는 규칙은 &quot;루트 노드는 검은색 이어야한다&quot;이다. 와 &quot;빨간 노드의 자식들은 모두 검은색이다&quot; 로 좁혀진다. 
+루트 노드의 색은 검은색이다는 루트 노드를 검은색으로 칠하면 되기에 간단하다. 
+그럼 문제는 <strong>빨간 노드의 자식을은 모두 검은색이다</strong>이다. → &quot;빨간 노드는 연달아 있을 수 없다란 말&quot;
+이 규칙이 위반되었다는 것은 <mark class="highlight-red">삽입한 노드와 부모 노드의 색이 모두 빨간색이라는 것을 의미</mark>한다.
+<mark class="highlight-gray">→ 그냥 규칙을 빨간 노드는 연달아 있을 수 없다라 하면 안되나? 그럼 빨간 노드의 자식이 검은색이어야한다란 말이 또 와닿지 않것지?
+</mark>이 상황은 삽입한 노드의 삼촌, 즉 부모 노드의 형제 노드가 어떤 색이냐에 따라 그 경우가 세가지로 나뉜다.</p><ul id="3d527c2f-3a6d-41f7-aba1-119602bdb3a6" class="bulleted-list"><li>삼촌도 빨간색인 경우</li></ul><ul id="7ab8dec7-8fd2-453c-a7c6-3e15ae70ae7c" class="bulleted-list"><li>삼촌이 검은색이며 새로 삽입한 노드가 부모 노드의 오른쪽 자식/왼쪽 자식인 경우</li></ul><h3 id="36e95cd3-7c28-4c1f-acf0-6416d4094c92" class="">1번째 삼촌도 빨간색인 경우</h3><p id="b294db19-1701-4f42-908a-7bce9b871e23" class="">삼촌도 빨간색인 경우: 부모 노드와 삼촌 노드를 검은색으로 칠하고 할아버지 노드를 빨간색으로 칠하면 된다.</p><figure id="5ed09bf7-7658-4614-9c07-971dd7b40ed9" class="image"><a href="Red%20Black%20Tree/82134D35-47AF-40C7-88F1-BAD98215AF64.jpeg"><img style="width:1707px" src="Red%20Black%20Tree/82134D35-47AF-40C7-88F1-BAD98215AF64.jpeg"/></a></figure><p id="725b842e-af0b-4c16-b135-6affbf5133d3" class=""> 삼촌이 빨간색인 경우에 대한 후속 처리는 끝났지만, 이 작업으로 인한 부작용은 없는지 살펴봐야한다. 할아버지를 빨간색으로 칠함으로 4번 규칙을 위반하는지 따져봐야한다.→ 할아버지의 할아버지가 발간색이면 또 4번 규칙에 위반하는지 봐야한다. 이 굴레에서 벗어나라면 부모 노드가 검은색이거나, 새로 삽입한 노드가 루트여야한다.</p><h3 id="b05c4cf9-a290-4f65-97d4-bfe7c4ee55e2" class="">2번째 삼촌이 검은색이며 새로 삽입한 노드가 부모 노드의 왼쪽 자식인 경우</h3><p id="9fd30cb5-4fc0-41fb-a60d-f98c55e7bf0b" class=""><strong>삼촌이 검은색이면 회전한다, 삼촌이 빨간색이면 색을 다시 칠한다. 두개로 정리할 수 있다.</strong></p><p id="57ce7962-a00a-4ab8-8bb0-1450a487e42c" class="">삼촌이 검은 색이고 삽입한 노드가 부모 노드의 왼쪽 자식인 경우에는 부모 노드를 검은색, 할아버지 노드를 빨간색으로 칠한다음 할아버지 노드를 오른쪽으로 회전시킨다.</p><figure id="75f94517-7428-47e0-b03a-4f28f60a2a19" class="image"><a href="Red%20Black%20Tree/787A182E-9E44-4D4E-B04A-755C0384E6BA.jpeg"><img style="width:1764px" src="Red%20Black%20Tree/787A182E-9E44-4D4E-B04A-755C0384E6BA.jpeg"/></a></figure><p id="6822cffc-1018-47d3-b2f9-4e746f024b03" class="">두 번째 경우를 처리하고 난 다음 4번 규칙이 위반되지 않고 새로 삽입한 노드 B의 부모  D가 검은색이기 때문에 D에게 부모가 있었다고 간주해보자. 그 부모 노드의 색이 빨간색이어도 검은색이어도 4번 규칙을 위반하지 않는다.</p><h3 id="c8bf6a43-682a-4587-98f1-834af151a39e" class="">3번째 삼촌이 검은색이며 새로 삽입한 노드가 부모 노드의 오른쪽에 있을 경우</h3><p id="89370618-431a-4172-8a32-287647749c91" class="">삼촌이 검은색이고 삽입한 노드가 부모 노드의 오른쪽 자식인 경우엔 부모 노드를 왼쪽으로 회전시켜 이 상황을 두 번째 경우의 문제로 바꾼다.</p><figure id="304bdf4d-8c7d-445b-80d0-43349435a502" class="image"><a href="Red%20Black%20Tree/8385B4D4-BCE2-4714-B02C-846FF0B56E15.jpeg"><img style="width:1670px" src="Red%20Black%20Tree/8385B4D4-BCE2-4714-B02C-846FF0B56E15.jpeg"/></a></figure><p id="7473008c-1f56-4212-a1a5-eeded3d2b190" class=""> 이 경운 문제의 유형을 바꾼 것이지 문제가 해결된 것은 아니다. 문제가 세번째 경우로 바뀌면서 새로 삽입한 노드 D가 부모가 되고 부모 노드였던 B가 자식이 되었다.
+ 첫 번째 경우를 처리한 다음에 할아버지 노드를 새로 삽입한 노드로 간주했던 것처럼, 이번에는 부모였던 노드를 새로 삽입한 노드로 간주시키고 두번째 경우의 문제로 현재 상황을 넘긴다.</p><pre id="fbad3638-ae65-4b77-baca-170c3a776ac3" class="code"><code>void RBT_RebuildAfterInsert(RBTNode** Root, RBTNode* X){
+	while(X!=(*Root)&amp;&amp;X-&gt;Parent-&gt;Color == RED){
+		if(X-&gt;Parent == X-&gt;Parent-&gt;Parent-&gt;Left){
+			RBTNode* Uncle = X-&gt;Parent-&gt;Parent-&gt;Right;
+			if(Uncle-&gt;Color == RED){
+				X-&gt;Parent-&gt;Color = BLACK;
+				Uncle-&gt;Color = BLACK;
+				X-&gt;Parent-&gt;Parent-&gt;Color = RED;
+
+				X = X-&gt;Parent-&gt;Parent;
+			} else {
+				if(X==X-&gt;Parent-&gt;Right){
+					X=X-&gt;Parent;
+					RBT_RotateLeft(Root, X);
+				}
+				X-&gt;Parent-&gt;Color = BLACK;
+				X-&gt;Parent-&gt;Parent-&gt;Color = RED;
+				RBT_RotateRight(Root, X-&gt;Parent-&gt;Parent);
+			}
+		} else {
+			// 부모가 할아버지의 오른쪽인 경우는
+			// 왼쪽 자식인 경우의 코드에서 좌/우만 바꾸면된다.
+		}
+	}
+	
+	(*Root)-&gt;Color = BLACK;
+}</code></pre><h2 id="60ff7876-43bb-4e0e-9947-bff9ff12fd69" class="">레드 블랙 트리의 노드 삭제</h2><p id="f5792ec6-3148-4e10-93fc-508f4e83bf73" class="">이진 탐색 트리의 삭제는 동일하고 나머지 후처리가 다르다. 보통 5번 규칙인 검은색 노드의 개수를 맞추는데 초점을 맞춰서 후처리를 진행한다. <strong>그렇기에 빨간색 노드를 삭제를 할 경우엔 아무런 문제가 없다.</strong> (1-5번의 규칙이 무너지는 경우가 없기 때문)
+
+이유를 정확하게 따지면 삭제를 하는 과정에서 4번 규칙(빨간 노드가 연달아 오면 안 된다.)과 5번 규칙(모든 경로의 검은색 노드의 개수 유지)만 무너지기 때문이다.  4번은 검은색 노드를 삭제하면 위반이 되는 경우가 있으나, 빨간 색 노드를 삭제하는 경우 4번 규칙을 위반하는 경우는 없다. 5번도 검은색 노드의 개수가 유지인데 빨간색 노드를 삭제한다고 검은색 노드의 개수가 달라지는 것이 아니기때문에 위반하지 않는다.</p><p id="b7f11d6a-c313-4383-9043-4957b0854a12" class="">
+</p><h3 id="9e16804e-70bb-447f-9183-a0e94e49f44b" class="">Case: 1, 검은색 노드를 삭제 후 빨간 노드가 연달아 있는 경우</h3><figure id="fa257c24-fe64-427a-979c-cfeb3da87334" class="image"><a href="Red%20Black%20Tree/Untitled%201.png"><img style="width:1618px" src="Red%20Black%20Tree/Untitled%201.png"/></a></figure><p id="939833fb-4557-44aa-823f-0ee75a64e771" class="">대체하는 빨간색 자식 노드를 검은색으로 칠하면 된다.</p><h3 id="55300d5b-8277-494d-b82e-80fee487aa98" class="">Case: 2, 삭제한 노드의 자식이 검은색이라면?</h3><figure id="d3426e9b-fd4a-4b3b-98be-ae3d86f9196c" class="image"><a href="Red%20Black%20Tree/Untitled%202.png"><img style="width:2201px" src="Red%20Black%20Tree/Untitled%202.png"/></a></figure><p id="0e2ad536-6882-4936-89e5-abda1a39705a" class="">5번 규칙을 위반하게 된다. 검은색 노드의 수가 동일하지 않다. 그래서 문제를 쉽게 하기 위해서 코드가 아니라 개념적으로 색을 한번 더 검은색으로 칠해준다. 이것을 이중 덧칠이라고하고 그림상에서는 직사각형으로 표현한다. 이것으로써 5번 규칙을 위반하지 않게 되었다.
+5번을 위반하는 것을 수습하는 것보다 1번 규칙을 수습하는게 쉽기 때문에 이중 덧칠을 한다. ㅋㅋ</p><hr id="14335fd1-c602-438a-a082-1aeadcf0a8ea"/><h2 id="05879416-9511-45bb-96df-82df2beefb72" class="">1번 규칙: 모든 노드는 검은색, 빨간색 노드로 되어있다.</h2><p id="c48b5cf8-af04-4e5e-b58e-7bcc3fa6bd9f" class="">쉽게 생각해서 루트 노드에 이중 덧칠한 색을 올려보낸다라고 생각하자. 루트 노드에 이중 덧칠한 색을 올려보내고 루트 노드에서 버리면 된다. ( 루트 노드에 이중 덧칠한 색이 있어도 모든 경로의 검은색 노드가 동일하니까 버릴 수 있다고 생각한다. 버리는 이유는 1번 규칙때문에)</p><h3 id="6b8f7d47-feee-46ce-9658-42400cecaf65" class="">Case 1: 형제가 빨간 색인 경우</h3><p id="99a9e78f-8620-482d-b774-09953734a0d4" class="">형제가 빨간색인 경우 부모 노드의 색이 검정색이다.  이 경우 부모와 형제의 색을 바꾸고 부모 기존으로 회전한다. → 형제가 할아버지 노드가 된다.</p><ol id="938d606e-122d-4e19-b43a-b00956722fcc" class="numbered-list" start="1"><li>형제를 검은색으로 부모를 빨간색으로 칠한다.</li></ol><ol id="9b46a1f4-e69c-4d88-b940-cb8d12964607" class="numbered-list" start="2"><li>형제를 기준으로 좌회전한다.</li></ol><figure id="3d92be35-d5cf-4f04-b4a0-c876356ca552" class="image"><a href="Red%20Black%20Tree/Untitled%203.png"><img style="width:624px" src="Red%20Black%20Tree/Untitled%203.png"/></a></figure><h3 id="90918aac-caf3-4c06-878b-7d1a0882ad05" class="">Case 2: 형제가 검은 색이고 양쪽 자식이 검은색인 경우</h3><p id="f3eb5d63-111c-4924-98df-718d8b2617e3" class="">형제 노드만 빨간색으로 칠하고, 이중 흑색 노드의 검은색을 부모에게 넘긴다. (부모 노드의 형제에 따라서 색이 달라진다. 부모 노드의 형제 노드가 빨간색이면 부모 노드를 검은색으로 칠한다.</p><figure id="39ecd65b-3c0a-46b6-82a8-641e39adaf92" class="image"><a href="Red%20Black%20Tree/IMG_0077.jpg"><img src="Red%20Black%20Tree/IMG_0077.jpg"/></a></figure><h3 id="86b3f40d-b124-47cd-a409-6b665dae9e33" class="">Case 4: 형제가 검은색이고 형제의 오른쪽 자식이 빨간색인 경우</h3><ol id="98628fdb-8407-4a3d-9f82-978b0b83cc30" class="numbered-list" start="1"><li>이중 흑색 노드의 부모 노드가 갖고 있는 색을 형제 노드에 칠한다.</li></ol><ol id="28675211-6585-4d97-96c6-5aa3f47ce35a" class="numbered-list" start="2"><li>부모 노드와 형제 노드의 오른쪽 자식 노드를 검은 색으로 칠한다.</li></ol><ol id="422a965e-45ac-4e6f-89c7-09d6339f936b" class="numbered-list" start="3"><li>부모 노드를 기준으로 좌회전을 한다.</li></ol><figure id="e8bfee41-5aac-4154-a94f-0bfc29472be8" class="image"><a href="Red%20Black%20Tree/Untitled%204.png"><img style="width:1459px" src="Red%20Black%20Tree/Untitled%204.png"/></a></figure><h3 id="20c08ce4-6889-49a0-8786-edf5efd4c35c" class="">Case 3: 형제가 검은색이고 형제의 왼쪽 자식은 빨간색, 오른쪽 자식이 검은색인 경우 → Case 4로 만들기</h3><ol id="ed6aef9e-98ae-4a1a-a56c-616dcf9607ca" class="numbered-list" start="1"><li>형제 노드를 빨간색으로 칠한다.</li></ol><ol id="8500a3ce-b2d3-45be-bd53-d8e468932baf" class="numbered-list" start="2"><li>왼쪽 자식을 검은색으로 칠한다.</li></ol><ol id="3ceb1eba-9ba7-4cc0-889c-a2d60874c8fa" class="numbered-list" start="3"><li>형제 노드를 기준으로 우회전한다.</li></ol><figure id="65f17750-f4c6-459d-8d23-af4ecdb78bb0" class="image"><a href="Red%20Black%20Tree/Untitled%205.png"><img style="width:1747px" src="Red%20Black%20Tree/Untitled%205.png"/></a></figure><h3 id="ef2a31f7-54ab-4e6f-87f7-87c2eaf49b26" class="">진행 흐름</h3><p id="adc93983-557a-4465-8a4e-6560b8a2cf3b" class="">(형제가 빨간색) : N과 S는 검은색 노드 케이스 통과 후 경우의 수
+ (P, SL, SR)
+→(검, 검, 검) Case 2:
+→ (검,빨,검) Case 3→ Case 4
+→ (검,검,빨) Case 4
+→ (빨,검,빨) Case 4
+→ (빨, 빨, 빨) Case 4</p><figure id="96392235-ef16-4daa-adbe-8b75e7244eb2" class="image"><a href="Red%20Black%20Tree/Untitled%206.png"><img style="width:432px" src="Red%20Black%20Tree/Untitled%206.png"/></a></figure><figure id="67642372-cdbd-4f15-850d-e5fcce16e4fe" class="image"><a href="Red%20Black%20Tree/Untitled%207.png"><img style="width:384px" src="Red%20Black%20Tree/Untitled%207.png"/></a></figure><pre id="88e5fc6b-c57c-4ecd-a935-fad8781140dd" class="code"><code>void RBT_RebuildAfterRemove(RBTNode** Root, RBTNode* Successor){
+	RBTNode* Sibling = NULL;
+	
+	// 루트 노드이거나 빨간색 노드한테 검은색이 넘어가면 루프 종료
+	while(Successor-&gt;Parent != NULL &amp;&amp; Successor-&gt;Color == BLACK){
+		if(Successor == Successor-&gt;Parent-&gt;Left){
+			Sibling = Successor-&gt;Parent-&gt;Right;
+	
+			// 형제가 빨간색인 경우
+			if(Sibling-&gt;Color == RED){
+				Sibling-&gt;Color = BLACK;
+				Successor-&gt;Parent-&gt;Color = RED;
+				RBT_RotateLeft(Root, Successor-&gt;Parent);
+			} else {// 형제가 검은색인 경우
+				// 형제 노드의 양쪽 자식이 검은색인 경우
+				if(Sibling-&gt;Left-&gt;Color == BLACK &amp;&amp; Sibling-&gt;Right-&gt;Color == BLACK){
+					Sibling-&gt;Color = RED;
+					Successor = Successor-&gt;Parent;
+				} else {
+					if(Sibling-&gt;Left-&gt;Color == RED){
+						Sibling-&gt;Left-&gt;Color = BLACK;
+						Sibling-&gt;Color = RED;
+						
+						RBT_RotateRight(Root, Silbing);
+						Sibling = Successor-&gt;Parent-&gt;Right;
+					}
+					//오른쪽 자식이 빨간색인 경우
+					Sibling-&gt;Color = Successor-&gt;Parent-&gt;Color;
+					Successor-&gt;Parent-&gt;Color = BLACK;
+					Sibling-&gt;Right-&gt;Color = BLACK;
+					RBT_RotateLeft(Root, Successor-&gt;Parent);
+					Successor = (*Root);
+				}
+			}
+		} else {
+                       /* ``` */
+		}
+	}
+
+	Successor-&gt;Color = BLACK;
+}</code></pre></div></article></body></html>

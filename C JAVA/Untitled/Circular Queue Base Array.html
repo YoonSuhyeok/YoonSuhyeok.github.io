@@ -1,0 +1,635 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Circular Queue Base:Array</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="5b1804df-be6e-41e0-bd5a-022c81a8a5b8" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">👓</span></div><h1 class="page-title">Circular Queue Base:Array</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Queue &amp; Tree</span></td></tr></tbody></table></header><div class="page-body"><h2 id="9490f6a3-5681-4bb3-a70c-cbf9fb4a2387" class="">FIFO(First in First Out)</h2><p id="fd32a00b-712a-4a48-9c89-f0aaf1ad2d9e" class="">줄 세우기와 같다. 뭔가를 기다릴 때 줄을 세우곤 하는데 처음 섰던 사람이 먼저 나가는 것과 같다!</p><h2 id="00193518-0277-4624-a2b1-763044315678" class="">큐의 주요 기능: 삽입과 제거</h2><p id="0f5747b9-fa49-4524-bd02-68c91de47bdd" class="">큐의 가장 앞요소를 Front, 마지막 요소를 Rear라고 부른다.
+스택과 다른 점은 스택의 경우 Top에서만 삽입, 제거 연산이 이루어졋지만,
+삽입(Enqueue)은 Rear에서, 제거(Dequeue)는 Front에서 이루어진다.</p><p id="af3741f6-bea2-464b-91c2-21c4fb788bb3" class="">
+</p><h2 id="927ca57f-d635-47a2-b4de-8a9612b935af" class="">순환 큐</h2><p id="e582520d-01d1-487b-b938-dbc097a95a6f" class="">큐를 배열로 구현해야한다면 어떻게 구현할까?
+제거 연산부터 생각해보자
+1 2 3 4 0 0 0 0 있다면 Front의 1을 제거시 2 3 4 는 앞으로 한 칸씩 옮겨와야한다.
+그런 경우 문제가 하나 생기는데 Front제거 후 앞으로 하나씩 옮기는 비용이 크다는 것
+성능 저하를 일으킨다.</p><h3 id="232c3bff-6955-40b1-8f42-499d0d0a8e66" class="">Front를 가리키는 변수를 도입하기</h3><p id="241ac0ef-eb54-412e-b420-556ef6e7cac8" class="">스택의 Top을 가리키던 변수가 생각이 나기 시작한다.
+그리고 Rear를 가리키는 변수도 하나 만든다. 그럼 삽입이 일어난 경우에만 Rear의 위치를 바꾸면 된다. 이 변수는 실제 Rear의 위치보다 1을 더한 값을 가지게 된다.</p><h3 id="ed900901-7780-4d2b-8114-1b6a72c904f5" class="">또 다른 문제 큐의 용량이 줄어든다</h3><figure id="b54de412-ec4f-41f6-8025-2ced1076e466" class="image"><a href="Circular%20Queue%20Base%20Array/Untitled.png"><img style="width:708px" src="Circular%20Queue%20Base%20Array/Untitled.png"/></a></figure><div id="b87cb58a-71d5-4110-a5dd-8a59bc59ab34" class="column-list"><div id="42247fcd-98a9-4750-8a72-11d9dc1241e9" style="width:56.25%" class="column"><h3 id="7adf0847-c215-402f-a111-7a680e9f0be8" class="">기존의 배열의 경우 이렇게 일자로 있다 
+이를 동그랗게 구부려본다면?</h3><p id="59df9f93-5083-4210-a625-2a4713bd1b9a" class="">
+</p><p id="de0e06ce-1d3c-4465-8a3f-bf3e9be7b1d6" class="">시작과 끝이 구분이 안되게 된다.
+Front와 Rear가 만나게 된다면 이 큐는 다 차있는 상태가 된다.</p><h3 id="16d768c7-cd7b-4868-b81a-172efdd8e200" class="">3번째 문제 비어있는 상태, 가득 차 있는 상태를 구분하지 못한다.</h3><p id="2c914ebc-1283-473f-8a4f-90134920acca" class="">그 이유는 Rear값이 1만큼 더 많은 상태이기 때문이다. 그럼 배열의 한 칸을 더 늘려서 Front와 Rear의 사이를 한칸 띄워두는 것이다.</p></div><div id="c4960028-0117-4a0f-a583-828b63b8f383" style="width:43.75%" class="column"><figure id="99f96ff2-c758-47f6-b7a7-be70a88cf03c" class="image"><a href="Circular%20Queue%20Base%20Array/Untitled%201.png"><img style="width:288px" src="Circular%20Queue%20Base%20Array/Untitled%201.png"/></a></figure></div></div><p id="02ae5f59-98cc-466e-923c-1fec8bc12dd0" class="">이렇게 하면 비어있을 때는 전단과 후단이 같은 곳을 가리키고, 가득 차 있는 경우 Rear가 Front보다 1작은 값을 가지게 된다.</p><h2 id="9cea4fbb-7bd5-4bbb-9c6c-b63cb52e1bf7" class="">Circular Queue 구현하기</h2><h3 id="ace4cb39-27bb-4786-b4bb-d073e87ea86e" class="">선언</h3><p id="58b7bc33-3b0c-429f-85a3-9f5da0be4e65" class="">큐의 노드는 앞서 링크드 리스트나 스택에서 사용했던 바로 그 노드 구조체와 같은 모습을 한다.</p><pre id="8e1b4595-3231-4073-9c09-bc90c6c2cea2" class="code"><code>typedef int ElementType;
+
+typedef struct tagNode{
+	ElemenetType Data;
+} Node;</code></pre><p id="0533ba4e-0359-46c1-9be9-75118004cbc7" class="">순환 큐는 Capacity, Front, Rear,  Pointer About  Array of Circular_Queue Element를 가지고 있다.</p><pre id="a56cee1f-fb5c-4590-8f0d-b85f336e06e9" class="code"><code>typedef struct tagCircularQueue{
+	int Capacity;
+	int Front;
+	int Rear;
+	Node* Nodes; // 노드 배열
+} CircularQueue;
+</code></pre><p id="0f7255ac-29c8-4294-966c-701581be1a6f" class="">Capacity는 배열의 크기로 실제의 용량보다 하나 작은 값을 가진다. 그 이유는 순환큐는 공백/포화 상태를 표현하기 위해 Dummy Node를 한 개 더 갖고 있기 때문이다. Rear는 실제의 후단보다 1 더 큰 값을 가지고 있다.</p><h3 id="91603efc-d95d-4017-87fc-c0fffc46af46" class="">생성과 소멸</h3><p id="478fd192-347a-4cc4-a0d8-f755871e0667" class="">Node의 크기 X (Capacity + 1)를 크기로 갖는 배열을 자유 저장소에 할당한다.
+배열이 실제 데이터가 담길 공간보다 1만큼 더 큰 이유는 공백/포화 상태를 나타내는 더미 노드를 가지기 때문이다.</p><pre id="835b0915-5a40-487f-9ed2-db9a9dd33de7" class="code"><code>void CQ_CreateQueue(CircularQueue** Queue, int Capacity){
+	// 큐를 자유 저장소에 생성
+	(*Queue) = (CircularQueue)malloc(sizeof(CircularQueue));
+  // 입력된 Capacity+1 만큼 노드를 자유저장소에 생성
+	(*Queue)-&gt;Nodes = (Node*)malloc(sizeof(Node)*(Capacity+1));
+	(*Queue)-&gt;Capacity = Capacity; // 큐가 수용할 실제 용량을 저장
+	(*Queue)-&gt;Front = 0;
+	(*Queue)-&gt;Rear  = 0;
+}
+
+void CQ_DestoryQueue(CircularQueue* Queue){
+	free(Queue-&gt;Nodes);
+	free(Queue);
+}</code></pre><p id="954fca2a-4fd7-4342-9764-c5d37fade3c3" class="">제거시 배열을 먼저 제거한 후 Queue를 제거한다.</p><p id="caddbe80-406e-4a33-85e3-ace3315eb42b" class="">
+</p><h3 id="ec5f1d1d-5adb-4353-9477-a886d98bd887" class="">삽입(Enqueue) 연산</h3><p id="25cd86f6-cdb1-4554-8584-b99e8aebf1a6" class="">삽입 연산의 경우 Rear 잘 다루는 것이 핵심이다.
+Rear의 값이 Capacity + 1과 같은 값을 가지고 있다면 Rear가 배열의 끝에 도달했다는 의미한다.
+그러므로 Rear와 Position을 0으로 지정한다. 그렇지 않은 경우에는 Position에 Rear를 저장하고 Rear를 1 증가한다.</p><pre id="c2353f11-bb5c-474d-b544-700de3109bd3" class="code"><code>void CQ_Enqueue(CircularQueue* Queue, ElementType Data){
+	int Position = 0;
+
+	if(Queue-&gt;Rear == Queue-&gt;Capacity){
+		Position = Queue-&gt;Rear;
+		Queue-&gt;Rear = 0;
+	} else {
+		Position = Queue-&gt;Rear++;
+	}
+
+	Queue-&gt;Nodes[Position].Data = Data;
+}</code></pre><p id="af9bcdbc-35fd-47bb-89da-5937e065fe17" class="">
+</p><h3 id="956b0363-bf5c-413c-8ecc-b16070478eef" class="">제거(Dequeue) 연산</h3><p id="50451222-393a-41f3-9afd-d7419033ec00" class="">제거하는 경우는 매우 쉽다. 큐의 제거에서는 Front를 잘 관리해주면 된다.
+Position에 Front를 저장하고 이 값을 건드리지 않고 함수를 종료시 Front의 데이터를 반환시에 배열의 인덱스로 사용된다.</p><pre id="b4b9ef21-a42f-436a-b54b-848081131ee7" class="code"><code>ElementType CQ_Dequeue(CircularQueue* Queue){
+	int Position = Queue-&gt;Front;
+	
+//Front가 Capacity와 같다는 것은 배열의 끝에 있다는 것을 의미
+	if( Queue-&gt;Front == Queue-&gt;Capacitiy)
+		Queue-&gt;Front = 0;
+	else
+		Queue-&gt;Front++;
+
+	return Queue-&gt;Nodes[Position].Data;
+}</code></pre><p id="41c6bc22-b398-41ef-ab50-14c9cedb5e85" class="">
+</p><h3 id="3668690c-2010-43b1-a2f8-09e611e8fbc1" class="">공백 상태 확인</h3><p id="ee2c04d9-7e20-47da-bdd2-d602c92e081a" class="">Front와 Rear 값이 같다면 배열이 비어있는 상태를 의미한다.</p><pre id="af7e94b3-0b6a-4330-9591-76d8881c70c7" class="code"><code>int CQ_IsEmpty(CircularQueue* Queue){
+	return (Queue-&gt;Front == Queue-&gt;Rear);
+}</code></pre><p id="6556459b-0d4e-4018-9a04-c63ac146b68a" class="">
+</p><h3 id="0e0202d3-2b24-43a0-95f2-4061c7dc4088" class="">포화 상태 확인</h3><p id="7f9cd894-658a-4440-98bc-5f6c32c90606" class="">두 가지 경우를 고려해야한다. 1. 순환 큐 배열 내에서 Front가 Rear 앞에 위치하는 경우 Rear와 Front차가 Capacity와 동일한지 봐야한다. 2. Front가 Rear 뒤에 이쓴 경우 Rear 값의 1을 더한 값이 Front에 일치하는지 봐야한다.</p><pre id="9a0bba24-cfc2-4475-a76f-e2bf37d23ac8" class="code"><code>int CQ_IsFull(CircularQueue* Queue){
+	if( Queue-&gt;Front &lt; Queue-&gt;Rear ){
+		return (Queue-&gt;Rear - Queue-&gt;Front) == Queue-&gt;Capacity;
+	else
+		return (Queue-&gt;Rear+1) == Queue-&gt;Front;
+} </code></pre></div></article></body></html>

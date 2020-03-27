@@ -1,0 +1,635 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>LinkedList Stack</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1c59ba74-e138-42a7-9c8a-312e8058c396" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤖</span></div><h1 class="page-title">LinkedList Stack</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">List &amp; Stack</span></td></tr></tbody></table></header><div class="page-body"><p id="e4dcf052-c930-4509-b90b-67c656fe819e" class="">링크드리스트로 구현하면 좋은 점: 스택의 용량에 제한을 두지 않아도 된다는 것</p><h3 id="20f7e39b-d30f-4f91-9444-ff85588c2a36" class="">스택과 스택의 노드 표현하기</h3><p id="8aadabf0-1d9c-40ca-9a12-111fe3695fc2" class="">배열과는 달리 링크드 리스트는 인덱스로 노드에 접근할 수 없습니다.</p><pre id="160a2d81-82eb-4d91-830d-3ef67cb3e8cb" class="code"><code>typedef struct tagNode{
+	char* Data;
+	struct tagNode* NextNode;
+} Node;</code></pre><p id="1a3f2a5e-b8f8-46d3-a1e4-605a41864c0c" class="">배열 스택에서와 달리 Data 필드가 char* 형으로 선언되었는데 뭐로 선언하든 자신에게 필요한 것으로 타입을 선언하면 된다.
+배열 기반과 달리 스택의 용량, 최상위 노드의 인덱스가 필요가 없다. 대신 List 포인터의 헤드와 테일(Top 포인터)에 대한 포인터가 필요함</p><pre id="0337e5ed-fef5-4a1a-ae0e-80735bbf0594" class="code"><code>typedef struct tagLinkedListStack{
+	Node* List;
+	Node* Top;
+} LinkedListStack;</code></pre><p id="fdecfd89-7852-4658-ac52-372bddc1dd50" class="">List 포인터는 스택이 기반하고 있는 링크드 리스트에 접근할 수 있게 한다.
+Top 포인터는 링크드 리스트 Tail을 가리킴으로 최상위 노드에 대한 정보를 유지한다.
+Top 포인터가 없어도 링크드 리스트의 주소를 알아낼 수 있지만 순차 탐색을 해야함으로 너무 느리다. 그 대신 Top포인터 4바이트를 소비함으로써 테일을 찾기 위한 시간을 최소화한다.
+Q. 그럼 LinkedList를 구현할 때도 이런 Top 포인터를 쓰면 좋지 않았을까?\</p><h2 id="df212e5e-cb11-4d62-9d5d-1359936cb209" class="">스택의 기본 연산 구현하기</h2><h3 id="39d70a49-8a0f-42f2-96c8-3f7ffe80ffbd" class="">스택의 생성과 소멸</h3><p id="a49b6b79-1ea2-421e-8233-0451a241d82f" class="">배열과 달리 용량을 결정하는 매개변수가 필요하지 않다.</p><pre id="9c0a4317-7313-4d6c-8490-1331f88e98ee" class="code"><code>void LLS_CreateStack(LinkedListStack** Stack){
+	(*Stack) = (LinkedListStack*)malloc(sizeof(LinkedListStack));
+	(*Stack)-&gt;List = NULL;
+	(*Stack)-&gt;Top = NULL;
+}</code></pre><p id="51f311f8-0b30-4084-b5a7-621358b31d59" class="">자유 저장소에 공간을 할당하는 malloc()함수와 free()함수는 바늘과 실처럼 따라 다닌다.
+</p><pre id="6b1b6571-d37e-45bd-af80-e3d351d0333d" class="code"><code>void LLS_DestroyStack(LinkedListStack* Stack){
+	while(!LLS_IsEmpty(Stack)){
+		Node* Poped = LLS_Pop(Stack);
+		LLS_DestroyNode(Popped);
+	}
+	free(Stack);
+}</code></pre><h3 id="fab873b4-fe11-4bf6-b884-c84d965884f6" class="">스택 노드의 생성과 소멸</h3><pre id="5de448cf-cda3-49c1-9765-5f8f04d624d4" class="code"><code>Node* LLS_CreateNode(char* NewData){
+	// 자유 저장소에 노드 할당
+	Node* NewNode = (Node*)malloc(sizeof(Node));
+	
+	// 입력받은 문자열의 크기만큼을 자유 저장소에 할당
+	NewNode-&gt;Data = (char*)malloc(strlen(NewData)+1);
+	
+	// 자유 저장소에 문자열 복사
+	strcpy(NewNode-&gt;Data, NewData); // 데이터를 저장한다.
+	
+	NewNode-&gt;NextNode = NULL; // 다음 노드에 대한 포인터는  NULL로 초기화한다.
+
+	return NewNode; // 노드의 주소를 반환한다.
+}</code></pre><p id="e0213fcc-af21-492b-91c5-cda665ec224d" class="">다음은 메모리에서 노드를 제거하는 LLS_DestoryNode()
+한 번은 노드의 Data필드를 자유 저장소에서 해제, 나머지 한번은 노드를 해제 ! 총 두번</p><pre id="f5a70155-6a49-40db-8152-bd98a48ebbfe" class="code"><code>void LLS_DestroyNode(Node* _Node){
+	free(_Node-&gt;Data);
+	free(_Node);
+}</code></pre><h3 id="13d89671-a43d-4d0d-b1d0-10d17c21f7f4" class="">삽입(Push) 연산</h3><p id="b3650f3c-bf68-4710-8c8f-4f5496638d13" class="">링크드 리스트 버전의 삽입은 링크드리스트의 추가 연산과 비슷하다.
+1. 먼저 최상위 노드(테일)를 찾는다. → 새 노드를 얹는다.</p><pre id="f0441fed-3047-4d88-81e1-5376defebdea" class="code"><code>void LLS_Push(LinkedListSTack* Stack, Node* NewNode){
+	if(Stack-&gt;List == NULL){
+		Stack-&gt;List = NewNode;
+	} else {
+		// 최상위 노드를 찾아 NewNode를 연결한다.
+		Node* OldTop = Stack-&gt;List;
+		while(OldTop-&gt;NextNode != NULL){
+			OldTop = OldTop-&gt;NextNode;
+		}
+		
+		OldTop-&gt;NextNode = NewNode;
+	}
+
+	// 스택의 Top 필드에 새 노드의 주소를 등록한다.
+	Stack-&gt;Top = NewNode;
+}</code></pre><h3 id="1f651201-fc94-4152-9d7b-4510a3f4eabc" class="">제거(Pop) 연산</h3><p id="7281cff2-80ad-4cc3-973b-7bf197071be4" class="">링크드 리스트 기반의 제거 연산 총 4단계로 움직인다.</p><ol id="c1ba3696-b2db-46e4-b007-87c87912f44d" class="numbered-list" start="1"><li>현재 최상위 노드의 주소를 다른 포인터에 복사해 둔다.</li></ol><ol id="45e4dd76-156f-483e-ae48-03916a972668" class="numbered-list" start="2"><li>새로운 최상위 노드, 즉 현재 최상위 노드의 바로 이전(아래) 노드를 찾는다.</li></ol><ol id="8181a283-36ef-4909-b0fb-ddced3f35350" class="numbered-list" start="3"><li>LinkedListStack 구조체의 Top필드에 새로운 최상위 노드의 주소를 등록한다.</li></ol><ol id="353f73a7-3676-4df4-91c8-cad9971d2b24" class="numbered-list" start="4"><li>1에서 포인터에 저장해둔 옛 최상위 노드의 주소를 반환한다.</li></ol><pre id="4dade63a-9608-487f-97bd-6f4158da032c" class="code"><code>Node* LLS_Pop(LinkedListStack* Stack){
+	// 현재 최상위 노드의 주소를 다른 포인터에 복사해둔다.
+	Node* TopNode = Stack-&gt;Top;
+	if(Stack-&gt;List == Stack-&gt;Top){
+		Stack-&gt;List = NULL;
+		Stack-&gt;Top  = NULL;
+	} else {
+		// 새로운 최상위 노드를 스택의 Top 필드에 등록한다.
+		Node* CurrentTop = Stack-&gt;List;
+		while(CurrentTop != NULL &amp;&amp; CurrentTop-&gt;NextNode != Stack-&gt;Top){
+			CurrentTop = CurrentTop-&gt;NextNode;
+		}
+		
+		Stack-&gt;Top = CurrentTop;
+		CurrentTop-&gt;NextNode = NULL:
+	return TopNode;
+}</code></pre></div></article></body></html>

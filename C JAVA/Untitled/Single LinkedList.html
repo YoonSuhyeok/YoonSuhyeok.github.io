@@ -1,0 +1,896 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Single LinkedList</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="074915e1-c37d-4839-b910-921213edbb35" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">😀</span></div><h1 class="page-title">Single LinkedList</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">List &amp; Stack</span></td></tr></tbody></table></header><div class="page-body"><p id="8f577e48-7c60-414d-a538-8ce8a4abceba" class="">이 글을 쓰는 이유는 알고리즘 문제를 풀기 위해 자료구조 및 기초 알고리즘 (정렬, 탐색, 우선순위 큐&amp;힙, 해시 테이블, 그래프, 문자열 검색)을 C언어 책으로 공부하며 학교 주언어인 JAVA로도 찾아 서로 비교 및 정리를 하기 위해서이다.</p><hr id="d084a1f3-944e-4479-b36c-dab097c2630d"/><h1 id="c427251c-9df7-489b-9d51-8d1f1109d0d8" class="">1. 리스트</h1><h2 id="c068cf21-b1bc-4bc2-a1fa-5d21cfac7b3a" class="">Node 구현</h2><p id="9e94e58a-5702-4160-9d77-9410a527dc85" class="">기본 연산을 하기 전 기본 구조체를 표현해보기</p><div id="8c31e114-2988-4191-a20a-29c5482ec19b" class="column-list"><div id="4d1095e2-e468-400e-bed1-8740482be423" style="width:50%" class="column"><pre id="a159e745-130e-4d38-988e-8654403aba82" class="code"><code>struct Node{
+	int Data; /* data 필드 */
+	struct Node* NextNode; /* 다음 노드를 가리키는 포인터 */
+};</code></pre><p id="ea2a6309-5f8b-415a-8e4d-9be31bdd8e6e" class="">C언어의 경우 이렇게 Node 구조체의 인스턴스를 만들려면 struct 키워드를 동반해야해서 불편하다.  struct Node MyNode; 이런 식으로 그렇기에 typedef 키워드를 사용해 정의하여 사용</p><pre id="e4cfd8f6-2a47-4aea-a966-1afd3c7e5dca" class="code"><code>typedef struct tagNode{
+	int Data;
+	struct tagNode* NextNode;
+} Node;</code></pre><h3 id="4e805144-bad3-41c8-8a9e-8909759b23dc" class="">메모리 종류</h3><p id="8fbd5f3b-bbb6-4e12-8c7e-3782854f0cc5" class="">C언어로 작성된 프로그램은 세가지 종류의 메모리 명역 1. 정적메모리 (전역,정적변수 저장되는 곳) 2. 자동메모리 (지역변수 저장되는 곳) 3. 자유 저장소
+정적 메모리는 전역/정적 변수를 메모리에 할당한 후 프로그램이 종료될 때 해제되는 곳, 중요한 곳은 Automatic Memory / Free Store 이다. JAVA의 경우 가비지컬렉터가 자동으로 자유저장소를 관리해주지만 프로그래머가 가비지 컬렉터의 속성을 모르면 메모리 누수를 만드는 경우가 종종 발견된다.</p><p id="5f80c6e7-f454-405b-b5a9-908c2a69ae7d" class="">스택 구조로 이루어져 코드블록의 괄호로 종료됨에 따라 저장된 변수가 사라진다.</p><h3 id="2260b96c-f2f2-4b79-8f54-07a7b9e58dde" class="">자유 저장소</h3><p id="811a8ed8-1582-4a93-8eef-f9d29e9fce1e" class="">프로그래머가 직접 관리해야하는 메모리 영역
+ !자유는 자동 메모리 영역에서 코드 블록{ }이라는 한계로부터 해방을 의미!
+ 프로그래머는 자유롭게 메모리를 할당해서 줄 수 있지만 그 메모리를 안전하게 해제하는  것도 프로그래머가 책임저야한다.</p></div><div id="a0951114-ab4e-45ee-8bca-7230c67a7c7a" style="width:50%" class="column"><pre id="beb685cf-c023-4077-b6eb-aa1e8c3ef8a2" class="code"><code>public class LinkedList{
+	private class Node{
+		private Object data; // 데이터가 저장될 필드
+		private Node next; // 다음 노드를 가리키는 필드
+	}
+}</code></pre><p id="2735d5be-4ce6-4599-ba07-1b06b0e296d3" class="">
+</p><h3 id="68db799b-b28c-4bc3-835b-ce315a0a67ec" class="">링크드 리스트의 주요 연산</h3><p id="8779b074-bc80-4bc3-adf2-2f8e70f1754a" class="">typedef 키워드로 선언시 Node MyNode; 이렇게 인스턴스 생성이 가능하다.</p><ul id="b211b1eb-54c1-493c-ac08-3f002d0e3ae4" class="bulleted-list"><li>노드 생성/소멸</li></ul><ul id="8c3a94de-b9e0-4a2c-acce-1e36dbccecc6" class="bulleted-list"><li>노드 추가</li></ul><ul id="1eb45cd7-6ce1-42fe-a983-3d4aa5465287" class="bulleted-list"><li>노드 탐색</li></ul><ul id="6b4edad3-9a16-44e5-b56f-473adf04db70" class="bulleted-list"><li>노드 삭제</li></ul><ul id="17bf5e9b-2887-4bbd-ba09-7df4394fa654" class="bulleted-list"><li>노드 삽입</li></ul><h3 id="c0d5b0c0-a0c3-4340-bba8-74f80f442073" class="">자동 메모리</h3><pre id="60986d94-4378-409c-9181-5a901595d6f5" class="code"><code>{ /* 코드 블록 시작 */
+	int a = 37;
+	Node MyNode;
+} /* 코드 블록 끝 여기에서 a와 MyNode는 자동 메모리에서 제거된다.*/</code></pre><p id="39a40eb6-0906-416f-8c9c-15f779d91688" class="">이 규칙은 함수에서도 동일하게 작용된다.</p></div></div><hr id="5a6cb880-194f-4a15-b600-46fe95377fa2"/><h3 id="d08b6e1e-1d1a-465c-990a-653d47d4f1f4" class="">노드 생성/소멸</h3><p id="19f75c63-a1d7-4271-89a2-4bfee6dacc3e" class="">먼저 자동 메모리( { } )에 노드를 생성하는 것을 고려해보기</p><pre id="0273f404-a727-4515-abcf-474bc693e531" class="code"><code>/* 노드 생성(문제버전) */
+Node* SLL_CreateNode( int NewData ){
+	Node NewNode; /* 자동 메모리에 새로운 노드 생성 */
+	NewNode.Data = NewData;
+	NewNode.NextNode = NULL;
+
+	return &amp;NewNode; /* NewNode가 생성된 메모리의 주소를 반환 */
+} /* 함수가 종료되면서 NewNode는 자동 메모리에서 제거된다. */
+---
+Node* MyNode = SLLCreateNode(117); /* MyNode는 할당되지 않는 메모리를 가리킨다. */</code></pre><div id="c5e350f0-6f54-4763-9830-192bf6861a5b" class="column-list"><div id="09e4e000-da55-4ae5-bc40-ab50d08b9531" style="width:50%" class="column"><p id="cf2fc7e5-682d-4d2e-918b-97de9656ae6f" class="">자동 메모리에 생성된 SLL_CreateNode는 종료되면서 자동 메모리에서 사라진다. return으로 NewNode의 주소를 반환하기에 MYnode는 엉뚱한 주소를 가리키게 된다.
+그렇기에 자동 메모리로 노드를 구현할 수 없다. 그렇게 자유 저장소 밖에 남은 방법이 없다. 자유 저장소에 메모리를 할당하려면 malloc()함수가 필요하다. void* malloc(size_t size);?
+malloc() 함수 반환형인 void*는 &#x27;만능 포인터&#x27;이다.  malloc() 함수가 할당한 자유 저장소의 메모리 주소를 어떤 형의 포인터로도 가리킬수 있다는 것을 의미한다.
+그리고 malloc() 함수의 유일한 매개 변수의 자료형이자 sizeof 언산자의 반홚여이기도 한 size_t는 typedef문을 이용하여 unsigned int의 별칭으로 선언되어 있다. 
+간단히 말해서 size_t는 곧 unsigned int형이라는 말인 것이다.
+아래 코드는 malloc함수를 사용하여 노드를 자유 저장소에 생성하는 예제이다.</p><pre id="11cd34f6-6c4a-4291-a981-0ec80a557265" class="code"><code>Node* NewNode = (Node*)malloc(sizeof(Node));</code></pre><p id="f5843469-a3dc-4d33-91a9-ccb794609ea3" class="">malloc()함수는 sizeof 연산자가 측정한 노드의 크기만큼 자유저장소에 할당한 후 NewNode 그 메모리 주소를 저장한다.</p></div><div id="bfabff50-cf33-41ed-be03-eb4c90f872b7" style="width:50%" class="column"><figure id="895d4f71-6028-46ff-8541-55ee011434eb" class="image"><a href="Single%20LinkedList/Untitled.png"><img style="width:624px" src="Single%20LinkedList/Untitled.png"/></a></figure></div></div><p id="51e9fd0a-0f4f-4a7d-9c34-eb04c85b06ba" class="">malloc()을 이용하여 SLL_CreateNode() 함수가 제대로 일을 할 수 있게 고쳐보기</p><pre id="f8531d74-ad38-4c6c-8f2f-15fd0587d090" class="code"><code>/* 노드 생성 */
+Node* SLL_CreateNode(ElementType NewData){
+	Node* NewNode = (Node*)malloc(sizeof(Node));
+	
+	NewNode-&gt;Data = NewData; /* 데이터를 저장한다. */
+	NewNode-&gt;NextNode = NULL; /* 다음 노드에 대한 포인터는 NULL로 초기화한다.*/
+	
+	return NewNode; /* 노드의 주소를 반환한다. */
+}</code></pre><p id="57b6c35b-b2c9-4152-8af5-6049d4d92db7" class="">노드를 소멸시키는 것은 자유저장소의 해결사인 free() 함수에게 노드가 있는 주소를 정확히 알려주면 free() 함수가 해결한다.
+노드 소멸 시키는 SLL_DestroyNode() 함수</p><pre id="097949a0-13d6-4f31-8d7d-be28fc7a7a82" class="code"><code>/* 노드 소멸 */
+void SLL_DestroyNode(Node* Node){
+	free(Node);
+}</code></pre><h3 id="2374ce46-09cc-495f-b3f1-d33e1095475c" class="">노드 추가</h3><p id="22ee3af5-2f44-4405-8105-01ba34d02b98" class="">링크드 리스트 꼬리 노드 뒤에 새로운 노드를 만들어 연결하는 것을 의미
+SLL_CreateNode()함수를 이용하여 자유저장소에 노드를 생성한 다음, 새로 생성한 노드의 주소를 테일의 NextNode 포인터에 대입하면 된다.</p><div id="e07fd707-5eac-4da3-8d37-8d36392b35f4" class="column-list"><div id="a439459e-7b26-470d-ab4d-b74eabf02f8b" style="width:50%" class="column"><pre id="3e087f48-6bc1-4520-a893-2c69fa991df5" class="code"><code>/* 노드 추가 */
+void SLL_AppendNode(Node** head, Node* NewNode){
+	/* 헤드 노드가 NULL이라면 새로운 노드가 HEAD */
+	if( (*Head) == NULL ){
+		*Head = NewNode;
+	} else {
+		/* 테일을 찾아 NewNode를 연결한다. */
+		Node* Tail = (*Head);
+		while(Tail-&gt;NextNode != NULL ){
+			Tail = Tail-&gt;NextNode;
+		}
+	
+		Tail-&gt;NextNode = NewNode;
+	}
+}
+
+//SLL_AppendNode 사용하기
+Node* List = NULL;
+Node* NewNode = NULL:
+
+NewNode = SLL_Create(117);
+SLL_AppendNode(&amp;List, NewNode);
+
+NewNode = SLL_CreateNode(119);
+SLL_AppendNode(&amp;List, NewNode);</code></pre></div><div id="c7b98ce2-a240-4134-8d88-760026e4ce15" style="width:50%" class="column"><pre id="95c333e7-eec5-47a2-91c5-e37c418b5faf" class="code"><code>public class LinkedList{
+	
+	private Node head;
+	private Node tail;
+	private int size=0;
+
+	private class Node{
+		private Object data;
+		private Node Next;
+		public Node(Object input){
+			this.data = input;
+			this.next = null;
+		}
+
+}
+
+public void add(Node head, Node NewNode){
+	if( head == null){
+		head = NewNode;
+	} else {
+		Node Tail = head;
+		whil(
+}</code></pre></div></div><h3 id="f48b4ed5-6d21-47c2-bfc2-dd2def7ad0aa" class="">노드 탐색</h3><div id="2d7c156b-f6a9-43d6-a76e-5fded7489257" class="column-list"><div id="4c009fbd-23fc-40e0-8793-0eea0f3b1796" style="width:50%" class="column"><p id="48546439-8c35-4100-bd09-c8dae9270d45" class="">노드 탐색은 리스트의 헤드부터 시작해서 하나씩 봐야 원하는 요소에 접근이 가능하다.</p><pre id="7f3a3f52-d89a-4d81-a671-c47de92638ba" class="code"><code>/* 노드 탐색 */
+Node* SLL_GetNodeAt(Node* Head, int Location){
+	Node* Current = Head;
+	
+	while(Current != NULL &amp;&amp; (--Location) &gt;= 0){
+		Current = Current-&gt;NextNode;
+	}
+	return Current;
+}
+
+/* 함수 사용 */
+Node* List = NULL;
+Node* MyNode = NULL;
+
+SLL_AppendNode(&amp;List, SLL_CreateNode(117)); /* 노드를 생성하여 List에 추가 */
+SLL_AppendNode(&amp;List, SLL_CreateNode(119)); /* 노드를 생성하여 List에 추가 */
+
+MyNode = SLL_GetNodeAt(List, 1); /* 두번째 노드의 주소를 MyNode에 저장
+printf(&quot;%d\n&quot;, MyNode-&gt;Data); /* 119를 출력 */
+</code></pre></div><div id="ceac2152-b21e-47a5-9b5d-45f96f3f66ce" style="width:50%" class="column"><h3 id="d9935d3f-bf28-4826-a278-650bf157a83a" class="">노드 삭제</h3><p id="2956eb0f-de14-4cc9-94cd-d34f7a6a00cd" class="">리스트 내에 있는 임의의 노드를 제거하는 연산, 삭제할 노드를 찾고 해당 노드의 다음 노드를 이전 노드의 NextNode 포인터에 연결하면 된다.
+그리고 삭제할 노드가 쓸 곳이 없다면 바로 제거하는 것이 좋다. 앞에서 만든 SLL_DestoryNode()로</p><pre id="9ef2997f-70c1-4a10-a8aa-28050ea2ee4a" class="code"><code>void SLL_RemoveNode(Node** Head, Node* Remove){
+    if( *Head == Remove){
+        *Head = Remove-&gt;NextNode;
+    }else{
+        Node* Current = *Head;
+        while(Current != NULL &amp;&amp; Current-&gt;NextNode != Remove){
+            Current = Current-&gt;NextNode;
+        }
+        if(Current != NULL)
+            Current-&gt;NextNode = Remove-&gt;NextNode;
+    }
+}</code></pre></div></div><div id="0e4c792b-434e-4161-ad12-1ad89d2852bb" class="column-list"><div id="c7388111-c645-4dac-8f3c-d85781605cde" style="width:50%" class="column"><h3 id="a8cfcec1-fc5d-4e99-9769-ce541705dc92" class="">노드 삽입</h3><pre id="75361b7d-0de0-40c3-a908-79f8c5ae50ff" class="code"><code>void SLL_InsertAfter(Node* Current, Node* NewNode){
+    NewNode-&gt;NextNode = Current-&gt;NextNode;
+    Current-&gt;NextNode = NewNode;
+}</code></pre></div><div id="f766c499-1036-406a-a0f1-2f95da427b00" style="width:50%" class="column"><h3 id="317d3ea0-352a-4815-94b2-60bbd689bad5" class="">노드 개수 세기</h3><pre id="0e2d6b01-11e1-45f0-b969-6f3543060b03" class="code"><code>Node* SLL_GetNodeAt(Node* Head, int Location){
+    Node* Current = Head;
+
+    while(Current != NULL &amp;&amp; (--Location) &gt;= 0){
+        Current = Current-&gt;NextNode;
+    }
+
+    return Current;
+}</code></pre></div></div><hr id="98c07051-d95f-4b1c-ac81-45566dfe10f3"/><h2 id="d3e6a0bc-0f1a-4caf-b184-98b2af632b9b" class="">예제 프로그램</h2><div id="078efc9b-af91-470a-885d-4d976d67ab5e" class="column-list"><div id="a5617313-b441-4404-ae5d-0965c491f60a" style="width:50%" class="column"><pre id="47fbb0ea-a87d-4ad9-afdb-cb60b5cb41d4" class="code"><code>// 파일명 : LinkedList.h
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+
+typedef struct tagNode
+{
+    ElementType Data;
+    struct tagNode* NextNode;
+} Node;
+
+/* 함수 원형 선언 */
+Node* SLL_CreateNode(ElementType NewData);
+
+void SLL_DestroyNode(Node* Node);
+void SLL_AppendNode(Node** Head, Node* NewNode);
+void SLL_InsertAfter(Node* Current, Node* NewNode);
+void SLL_RemoveNode(Node** Head, Node* Remove);
+Node* SLL_GetNodeAt(Node* Head, int Location);
+int SLL_GetNodeCount(Node* Head);
+
+#endif</code></pre><pre id="eeb0439d-66ff-447a-adb5-dce5ab4a7b19" class="code"><code></code></pre><p id="c49132e7-4034-4f2e-9de8-c1cbaf2de495" class="">링크드 리스트의 단점
+다음 노드를 가리키려는 포인터때문에 각노드마다 4byte의 메모리가 추가로 필요하다.
+특정 위치에 있는 노드를 얻는데 드는 비용이 크며 속도도 느리다. 노드의 개수가 n개라면 최악의 경우 n회의 노드 탐색 루프를 실행해야 특정 위치에 있는 노드를 찾을 수 있다. 반면 배열은 상수 시간에 노드를 얻을 수 있다.
+장점
+새로운 노드의 추가/삽입/삭제가 쉽고 빠르다. (배열은 요소 삽입 및 제거가 어렵다)
+현재 노드의 다음 노드를 얻어오는 연산에 대해 비용이 발생하지 않는다.(단점은 아니지만 장점이라고 하기도 어렵)</p><h3 id="43a35e22-deb9-4fc1-a84e-2202e76a0bfb" class="">정리: 노드의 추가/삽입/삭제는 빠르나 특정 위치에 있는 노드를 찾는 연산은 느리다.
+데이터베이스에 조회해온 레코드를 순차적으로 다루는 데에는 제격이다.</h3><pre id="f9b995a5-b860-4ab1-a9a3-6822937c63d8" class="code"><code>class Node {
+	int data;
+	Node next = null;
+	
+	Node(int d){
+		this.data = d;
+	} // 생성자
+
+	void append(int d){
+		Node end = new Node(d);
+		Node n = this;
+		while(n.next != null){
+			n = n.next;
+		}
+		n.next = end;
+	}
+
+	void delete(int d){
+		Node n = this;
+		while(n.next != null){
+			if(n.next.data == d){
+				ne.next = n.next.next;
+			} else {
+				n = n.next;
+			}
+		}
+	}
+
+	void retrieve(){
+		Node n = this;
+		while (n.next != null){
+			System.out.print(n.data + &quot; -&gt; &quot;);
+			n = n.next;
+		}
+		System.out.println(n.data);
+	}
+}</code></pre><p id="e33d30ec-87f0-4fc4-8fff-d26fc29dae9d" class="">참조 : <a href="https://www.youtube.com/watch?v=C1SDkdPvQPA">https://www.youtube.com/watch?v=C1SDkdPvQPA</a> (단방향 자료구조), 뇌를 자극하는 알고리즘</p><pre id="d6614816-7cbe-452f-a12d-886e71261b99" class="code"><code>class LinkedList{
+	Node header;
+	
+	static class Node{
+		int data;
+		Node next = null;
+	}
+	
+	LinkedList(){
+		header = new Node();
+	}
+		void append(int d){
+		Node end = new Node(d);
+		Node n = this;
+		while(n.next != null){
+			n = n.next;
+		}
+		n.next = end;
+	}
+
+	void delete(int d){
+		Node n = header;
+		while(n.next != null){
+			if(n.next.data == d){
+				ne.next = n.next.next;
+			} else {
+				n = n.next;
+			}
+		}
+	}
+
+	void retrieve(){
+		Node n = header.next;
+		while (n.next != null){
+			System.out.print(n.data + &quot; -&gt; &quot;);
+			n = n.next;
+		}
+		System.out.println(n.data);
+	}
+}</code></pre><h2 id="9e1e8c4d-ec2d-4a45-b0a1-999f829f89d3" class="">활용: 정렬되지 않은 LinkedList 중복값이 없도록 하기(단 버퍼X)</h2><p id="c38be6a7-54f4-4ac0-aa9a-5b6845d78cc6" class="">데이터 3→2→1→ 2→ 4
+</p><pre id="d430d985-86e4-4d47-8587-650787af67ec" class="code"><code>void removeDups() {
+	Node n = header;
+	while(n != null &amp;&amp; n.next != null ){
+		Node r = n;
+		while(r.next != null){
+			if(n.data == r.next.data){
+				r.next = r.next.next;
+			} else {
+				r = r.next;
+			}
+		}
+		n = n.next;
+	}
+}</code></pre><p id="acd8e215-55dd-45d3-ab0a-c8ea14faf673" class="">
+</p></div><div id="8d5177f5-694e-4590-bc39-7429b87cb677" style="width:50%" class="column"><pre id="20b7f70f-f6ad-4f7f-a419-918ffc3f7ded" class="code"><code>// 파일명: LinkedList.c
+#include &quot;LinkedList.h&quot;
+
+/* 노드 생성 */
+Node* SLL_CreateNode(ElementType NewData){
+    Node* NewNode = (Node*)mallc(sizeof(Node));
+    
+    NewNode-&gt;Data = NewData;
+    NewNode-&gt;NextNode = NULL;
+
+    return NewNode;
+}
+
+void SLL_Destroy(Node* Node){
+        free(Node);
+}
+
+void SLL_Append(Node** Head, Node* NewNode){
+    if((*Head) == NULL){
+        *Head = NewNode;
+    }
+    else
+    {
+        Node* Tail = (*Head);
+        while(Tail-&gt;NextNode != NULL){
+            Tail = Tail-&gt;NextNode;
+        }
+
+        Tail-&gt;NextNode = NewNode;
+    }
+}
+
+void SLL_InsertAfter(Node* Current, Node* NewNode){
+    NewNode-&gt;NextNode = Current-&gt;NextNode;
+    Current-&gt;NextNode = NewNode;
+}
+
+void SLL_InsertHead(Node** Head, Node* NewHead){
+    if(*Head == NULL){
+        (*Head) = NewHead;
+    }
+}
+
+void SLL_RemoveNode(Node** Head, Node* Remove){
+    if( *Head == Remove){
+        *Head = Remove-&gt;NextNode;
+    }else{
+        Node* Current = *Head;
+        while(Current != NULL &amp;&amp; Current-&gt;NextNode != Remove){
+            Current = Current-&gt;NextNode;
+        }
+        if(Current != NULL)
+            Current-&gt;NextNode = Remove-&gt;NextNode;
+    }
+}
+
+Node* SLL_GetNodeAt(Node* Head, int Location){
+    Node* Current = Head;
+
+    while(Current != NULL &amp;&amp; (--Location) &gt;= 0){
+        Current = Current-&gt;NextNode;
+    }
+
+    return Current;
+}
+
+int SLL_GetNodeCount(Node* Head){
+    int Count = 0;
+    Node* Current = Head;
+
+    while (Current != NULL){
+        Current = Current-&gt;NextNode;
+        Count++;
+    }
+
+    return Count;
+}</code></pre><p id="dbbc8ae1-a4a8-4b60-b025-0d6bf897d243" class="">
+</p></div></div></div></article></body></html>

@@ -1,0 +1,579 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Binary Tree 개념 설명</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="66c73873-3e02-49dd-9c6a-c080f3aa26e5" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🥈</span></div><h1 class="page-title">Binary Tree 개념 설명</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Queue &amp; Tree</span></td></tr></tbody></table></header><div class="page-body"><p id="15170708-488d-43b8-8ea8-e6d0818f8a4e" class="">이진 트리는 모든 노드가 최대 2개의 자식을 가질 수 있는 트리를 말한다.
+데이터를 담는 용도로는 사용하기 곤란하지만, 역으로 특별한 구조를 이용한 훌륭한 알고리즘이 개발되어있다.
+수식을 트리 형태로 표현하여 계산하게 하는 수식 이진 트리(Expression Binary Tree)
+아주 빠른 데이터 검색을 가능케 하는 이진 탐색 트리(Binary Search Tree)</p><h2 id="3e1d765d-abab-4bfc-ae04-bd01bf1f22d7" class="">이진 트리의 여러 형태</h2><div id="4dd62b2e-6a06-4f5f-9588-9abc059ca3a8" class="column-list"><div id="25fc5e48-f4ae-4a78-a6d6-2f519a7190d7" style="width:43.75%" class="column"><figure id="a0a98dc6-2a91-443b-8cab-ff6647644fc3" class="image"><a href="Binary%20Tree/6C54C51F-A05F-4A6E-9550-2FFCA8E1A24B.jpeg"><img style="width:288px" src="Binary%20Tree/6C54C51F-A05F-4A6E-9550-2FFCA8E1A24B.jpeg"/></a></figure></div><div id="cdb3562c-b8df-457e-a5c3-4ba83cbb0da8" style="width:56.25%" class="column"><p id="b8c5a3c6-ba18-4c38-b397-e3b637b3428f" class="">제일 중요한 특징은 노드의 최대 차수가 2라는 것
+옆 이진 트리를 <mark class="highlight-orange">Full Binary Tree</mark> 포화 이진 트리라고한다.
+잎 노드들이 모두 같은 깊이에 존재한다가 특징</p><p id="426c96f2-5baa-4737-a177-b904a23cb2a2" class="">
+</p></div></div><div id="265b4b89-ba73-496b-b992-9baa41a23ae9" class="column-list"><div id="9023fc80-08a3-4060-b31f-1621f2a677ac" style="width:43.75%" class="column"><figure id="f5233ef7-fb82-4067-963d-5a2c5676a87a" class="image"><a href="Binary%20Tree/872E3E54-CB38-4638-B3D4-035D94024BAF.jpeg"><img style="width:336px" src="Binary%20Tree/872E3E54-CB38-4638-B3D4-035D94024BAF.jpeg"/></a></figure></div><div id="d2cf7732-b6e2-45f6-983c-605325faca4f" style="width:56.25%" class="column"><p id="b1834b78-7eb0-4565-87ac-cabcabbd035f" class="">Full Binary Tree와 비슷하지만, FBT가 되기 전 단계의 트리도 있다. 이를 Complete Binary Tree 완전 이진 트리라 하는데 잎 노드들이 트리의 왼쪽부터 꽉! 채워져 있는 트리를 말한다. X표가 쳐저 있는 트리느는 이빨이 빠져있어서 안된다.</p></div></div><h3 id="9f6ca49b-8167-4b0a-a2ee-4132a7209c44" class="">왜 Full Binary Tree, Complete Binary Tree로 분류할까?</h3><p id="ce60cb52-ee3c-4fae-a0f1-354a9153e8cf" class="">이진 트리는 컴파일러나 검색 등에 사용되는 특수 자료구조이다. <mark class="highlight-red"><strong>특히 이진 트리를 이용한 검색에서는 높은 성능을 위해 트리의 노드들을 가능한 한 완전한 모습으로 배치하는 것이 필수다.</strong></mark>
+그래서 완전한 모습의 트리가 무엇인지 알고 있어야하는 것이다.</p><div id="83fc0b24-997f-4929-a9d2-be971ff47238" class="column-list"><div id="3b812545-4be4-4f5d-9058-07c202a37415" style="width:50%" class="column"><figure id="98d28c2a-f9df-429a-a89f-98c8c3ddfdb3" class="image"><a href="Binary%20Tree/CDEFF03C-E264-4ABA-B6F2-5214790C7A32.jpeg"><img style="width:336px" src="Binary%20Tree/CDEFF03C-E264-4ABA-B6F2-5214790C7A32.jpeg"/></a></figure></div><div id="f850f0b6-5f4d-43cd-9672-a362d60c56b9" style="width:50%" class="column"><p id="aa9f02db-c1a8-4d41-8ff0-65b2f5c7f1bc" class="">Height Balanced Tree는 오니쪽 하위 트리와 오른쪽 하위 트리의 높이가 1이상 차이나지 않는 이진 트리를 말한다.</p></div></div><div id="c152a4c2-9728-40c9-a417-820d81af8e07" class="column-list"><div id="2cabeee3-7eb3-4116-a836-848b19efe67d" style="width:50%" class="column"><figure id="afb3e0cf-cd21-44bf-82e4-4695237e433f" class="image"><a href="Binary%20Tree/4A3D1492-8FED-4A0D-81F0-5DC1D34E034B.jpeg"><img style="width:1038px" src="Binary%20Tree/4A3D1492-8FED-4A0D-81F0-5DC1D34E034B.jpeg"/></a></figure></div><div id="77800829-129c-4098-a17e-aecf8d5dcef8" style="width:50%" class="column"><p id="5675fda0-87ca-4a9a-a156-a7c059f529d2" class="">완전 높이 균형 트리는 왼쪽 하위 트리와 오른쪽 하위 트리의 높이가 같은 이진트리를 말한다.</p></div></div><h3 id="f3336ba2-db30-4816-820e-679010f44a8e" class="">이진 트리의 순회(Traversal)</h3><p id="2847bc6b-1ee8-42ef-9f46-1627d0006909" class="">순회는 <strong>몇 가지 규칙에 근거</strong>하여 이진 트리 내부를 돌아다니며 효율적인 방법으로 원하는 데이터에 접근할 수 있는 방법을 제공한다.
+
+Root→ Leaf 노드까지 아래 방향으로 방문하는 전위 순회 Preorder Traversal
+왼쪽 하위 트리부터 오른쪽 하위 트리 방향으로 방문하는 중위 순회 Inorder Traversal
+왼쪽 하위 트리, 오른쪽 하위 트리 순으로 방문하는 후위 순회 Postorder Traversal
+순회는 이 3가지이다.</p><div id="b9fdac64-2ad4-466c-8b4b-04ca7f74a79c" class="column-list"><div id="e4051527-e95a-4f44-bc60-36098110a45e" style="width:29.166666666666664%" class="column"><figure id="0ea5af61-1a7b-403f-aa20-8a7b50860deb" class="image"><a href="Binary%20Tree/82D6E312-E22E-424D-B173-1D4639C4D3AF.jpeg"><img style="width:685px" src="Binary%20Tree/82D6E312-E22E-424D-B173-1D4639C4D3AF.jpeg"/></a></figure></div><div id="a7acc194-192a-4a7c-8b0d-af1c3f851562" style="width:33.33333333333333%" class="column"><figure id="f4a0e99c-f7c1-4417-b204-ba16b8f6217c" class="image"><a href="Binary%20Tree/4E8CE2DE-2D57-496C-9379-E40F7CA4E911.jpeg"><img style="width:1272px" src="Binary%20Tree/4E8CE2DE-2D57-496C-9379-E40F7CA4E911.jpeg"/></a></figure></div><div id="593c8532-ea89-4931-975c-e6dad23385f7" style="width:37.500000000000014%" class="column"><figure id="aa7277e9-f55f-40f7-9bb0-de458fb1630c" class="image"><a href="Binary%20Tree/2320250B-5858-4627-9D07-EDCF0AB3BA08.jpeg"><img style="width:240px" src="Binary%20Tree/2320250B-5858-4627-9D07-EDCF0AB3BA08.jpeg"/></a></figure></div></div><div id="3b158723-e4df-4ad8-8428-ab9237e008e0" class="column-list"><div id="23e46c8b-1b43-462c-8ecd-78eb8ca4a7ae" style="width:50%" class="column"><figure id="84b4216a-f3eb-4531-894a-06b73b88ed30" class="image"><a href="Binary%20Tree/9E9271AB-B95E-4C49-A0B2-FB6DE8874D18.jpeg"><img style="width:973px" src="Binary%20Tree/9E9271AB-B95E-4C49-A0B2-FB6DE8874D18.jpeg"/></a></figure><h3 id="6b47a00a-a93e-4172-883a-7cff316e19dd" class="">Postorder traversal</h3></div><div id="4f3adf3b-e774-497d-ac7f-1aca1b235447" style="width:50%" class="column"><p id="d5c2a42e-cab6-4359-9f20-964f52aa73c2" class="">Inorder traversal가 중위 순회가 응용되는 대표적인 사례는 수식 트리(Expression Tree)이다.</p></div></div><div id="4ecc14a1-3f9c-47f1-8727-5a99c6bf3a48" class="column-list"><div id="135b20e7-c268-41af-84eb-b93bf6f15e4b" style="width:50%" class="column"><figure id="16e91427-2f1c-4dfb-8d6f-830ea6cb4293" class="image"><a href="Binary%20Tree/4FA93A31-FD4E-4CD0-9BE6-A79D4722F73A.jpeg"><img style="width:1171px" src="Binary%20Tree/4FA93A31-FD4E-4CD0-9BE6-A79D4722F73A.jpeg"/></a></figure></div><div id="a88ff7e1-4860-4f26-b98e-f2cdea093925" style="width:50%" class="column"><p id="cd4da43e-ebed-4402-8453-4f9834bbe02b" class="">이것은 바로 후위표기식이다.
+중위 순회로하면 중위표기식이 나온다!
+사실 이산수학에서 했던 거라 다 아시자나요?</p></div></div></div></article></body></html>

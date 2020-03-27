@@ -1,0 +1,791 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Priority Queue &amp; Heap</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="4667ffc9-4efe-4155-a716-d2abb8d433b3" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">⚔</span></div><h1 class="page-title">Priority Queue &amp; Heap</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Priority Queue &amp;Heap &amp; HashTable</span></td></tr></tbody></table></header><div class="page-body"><p id="a6a6ca84-184c-4b25-be2f-23b236f71aeb" class=""><strong>핵심: 데이터의 입력/출력이 이루어질 때마다 최소한의 비용으로 최우선 순위의 데이터를 헤드에 위치시키는 알고리즘의 효율 ⇒ 나중에 배우는 그래프 알고리즘의 효율적 구현에 도움이 된다.</strong></p><p id="33d65ac2-f9ac-4537-a76e-2eb913623121" class="">정의: 삽입(Enqueue), 제거( Dequeue) 연산을 지원하는 자료구조</p><h3 id="d638b718-575e-41cd-a6a4-4270291848b3" class="">우선 순위의 기준</h3><p id="fa62b9bd-9818-42e9-a8cc-8551d6ea97f7" class="">우선 순위의 기준은 정해진 것이 없다. 이것을 어떻게 결정하는 것은 프로그래머에게 달려있다. 값이 클수록, 시간이 빠를수록, 이런 식으로 있다. 여기서는 값이 작을수록 우선순위로 높은 것으로 한다.</p><h3 id="7c7e335d-410d-47ef-a528-3eb302172e62" class="">우선 순위 큐의 삽입 연산</h3><figure id="16488edc-e083-44d1-9c36-eb495fd9a52e" class="image"><a href="Priority%20Queue%20Heap/3010E67B-0585-4205-BD9E-912FE0402B67.jpeg"><img style="width:2388px" src="Priority%20Queue%20Heap/3010E67B-0585-4205-BD9E-912FE0402B67.jpeg"/></a></figure><figure id="421ebc82-0c0f-4b51-a75c-05eb18b9a2f7" class="image"><a href="Priority%20Queue%20Heap/54B6BFFD-E52D-4E55-86B4-65DABBCD6B70.jpeg"><img style="width:2388px" src="Priority%20Queue%20Heap/54B6BFFD-E52D-4E55-86B4-65DABBCD6B70.jpeg"/></a></figure><p id="43607449-8580-48c1-8758-75f1db12324d" class="">
+</p><figure id="deabed3b-88ac-4ba9-a53e-f9e2af5f4495" class="image"><a href="Priority%20Queue%20Heap/3E5FD93D-871E-4E14-8893-B67542679031.jpeg"><img style="width:2313px" src="Priority%20Queue%20Heap/3E5FD93D-871E-4E14-8893-B67542679031.jpeg"/></a></figure><p id="4290c52e-cc15-4799-9ccb-482bc90ce78e" class="">각 요소가 우선순위를 가지고, 우선순위 오름차순을 가진다. 현재 이 책은 값이 작은 값이 우선순위가 높다고 정했다. 20 값을 삽입할 경우 우선 순위 첫요소부터 순차적으로 우선순위를 비교하고 2와 17사이에 삽입하게 된다.<mark class="highlight-red">
+!문제는 순차탐색을 하면서 값을 삽입한다는 것</mark></p><h3 id="4fa25e48-de60-4974-bf2e-026fcb15ad46" class="">우선순위 큐의 제거연산</h3><p id="0ebb9728-88ea-40c9-b567-d09d2b0fff3b" class="">우선순위 큐의 제거(Dequeue) 간단하다. 맨 앞 값만 제거해서 반환하면 된다.</p><hr id="47520b7b-3330-42b8-85de-9f27e454e0f6"/><h1 id="af9f984b-32a5-43c7-8126-febacfbff62e" class="">Heap</h1><p id="9f465124-d382-4290-8847-8154226a08ec" class="">힙은 Heap Order  Property을 만족하는 완전 이진트리를 말한다. 완전 이진 트리는 최고 깊이를 제외한 모든 깊이의 노드들이 완전히 채워져있는 트리를 말한다. <mark class="highlight-gray_background">Heap Order Property: 트리 내의 모든 노드가 부모 노드보다 커야한다는 규칙</mark>  루트 노드는 부모가 없어 예외이다.
+Q. 1. 이진 탐색이 가능한가요?
+힙의 노드들은 자식 노드 &gt; 부모 노드 때문에 안된다.
+Q 2. 특정 값을 찾으려면 어떻게 해야하나요?
+찾기 위해서는 모든 노드를 순회해야한다.</p><h2 id="fab2a5c0-b752-4b29-afa6-566fc3e0f48c" class="">힙에서 가장 작은 데이터를 갖는 노드는 Root 노드다!</h2><p id="04dca6d1-4a95-473a-b5dd-0b4d54297f49" class="">힙은 두가지 연산만 가지고 있다. 노드 삽입, 루트 노드를 제거하는 최소값 삭제 </p><h3 id="9346827d-43cc-4594-9c88-aaef2bf14105" class="">힙에 새 노드 삽입하기</h3><ol id="0bdf4fb1-0748-4a98-bd28-b31f3b668da3" class="numbered-list" start="1"><li>힙의 최고 깊이, 최 우측에 새 노드를 추가한다. 힙은 완전 이진 트리를 유지하도록 해야한다.</li></ol><ol id="deaa3f9a-026c-41b0-9338-7112a8941052" class="numbered-list" start="2"><li>삽입한 노드를 부모 노드와 비교한다.</li></ol><p id="24c377f2-95c0-47a5-9f5d-e394c5c4a725" class=""> 2-1. 삽입한 노드 &gt; 부모 노드 : 값이 제대로 입력되었기에 연산을 종료한다.
+ 2-2. 삽입한 노드 &lt; 부모 노드 : 부모 노드와 삽입한 노드의 위치를 바꾸고 다시 2번을 반복한다.</p><h3 id="1e652794-d681-463e-b1ea-ecd782f6eaf4" class="">힙의 최소값 삭제</h3><p id="615e5891-4875-44ba-9c33-a3cd7ed66886" class="">힙의 최소값을 삭제한다. → root 노드 삭제 → Heap Order Property 유지</p><ol id="f1921307-aa31-4918-80b8-4d3dcc99c16e" class="numbered-list" start="1"><li>힙의 루트에 최고 깊이, 최 우측에 있던 노드를 루트 노드로 옮겨온다. 이때 힙의 힙 순서 속성이 파괴된다.</li></ol><ol id="60fdca4d-64ab-4061-a034-682554aec2c4" class="numbered-list" start="2"><li>옮겨온 노드의 양쪽 자식을 비교하여 작은 쪽 자식과 위치 교환을 한다. 힙 순서 속성을 지키려면 부모 노드는 양쪽 자식보다 작은 값을 가져야한다. 그렇기에 작은 값과 교환한다.</li></ol><ol id="28cfcc25-d9ff-4c0a-a438-0ccb99629ed6" class="numbered-list" start="3"><li>옮겨온 노드가 더 이상 자식이 없는 잎 노드가 되거나 양쪽 자식보다 작은 값을 갖는 경우에 삭제 연산을 종료한다. 아니면 2번을 반복한다.</li></ol><h3 id="75b3ec88-e997-48d1-b46c-1f2dcc66c3c7" class="">힙 구현</h3><p id="3a377dbc-cca2-4a87-9463-3f709c20683b" class="">링크드 리스트로 구현할 경우 최고 깊이에 있는 최우측 노드를 찾기힘들다.
+깊이 0 노드 → 배열의 0번 요소
+깊이 1의 노드(모두 2개) → 배열 1~2번 요소에 저장
+깊이 2의 노드(모두 4개) → 배열 3~6번 요소에 저장
+깊이 N의 노드(2^n개) → 배열 2^n-1 ~ 2^(n+1)-2번 요소에 저장
+
+K번 인덱스에 위치한 노드의 양쪽 자식 노드들이 위치한 인덱스
+ 왼쪽 자식 노드 : 2k+1
+ 오른쪽 자식 노드 : 2k+2
+k번 인덱스에 위치한 노드의 부모 노드가 위치한 인덱스 : (k-1)/2의 몫</p><h3 id="6035cc9c-bc70-47c0-8b9a-28d62bd4bf62" class="">힙의 자료구조  선언</h3><pre id="72681836-f433-4fec-84cc-12878d814d5b" class="code"><code>typedef int ElementType;
+
+typedef struct tageHeapNode{
+	ElementNode* Nodes;
+} HeapNode;
+
+typedef struct tagHeap{
+	HeapNode* Nodes;
+	int Capacity;
+	int UsedSize;
+} Heap;</code></pre><p id="4c4cbc90-fc01-45f0-a2fd-a1b7c014eb27" class="">두 가지 구조체
+힙의 각 노드를 표현하는 HeapNode 구조체
+다른 하나는 힙 자체를 표현하는 Heap 구조체
+Capacity 필드: 힙의 용량
+UsedSize : 실제 배열 안에 들어 있는 큐 요소의 수</p><h3 id="0ba75cc9-97e9-4127-904e-d60cf0bc90bf" class="">힙의 삽입 구현</h3><pre id="e51fa725-e955-4f8d-9e25-3654f1eab7e7" class="code"><code>void HEAP_Insert(Heap* H, ElementType NewData){
+	int CurrentPositiopn = H-&gt;UsedSize;
+	int ParentPosition = HEAP_GetParent(CurrentPosition);
+
+	if(H-&gt;UsedSize == H-&gt;Capacity){
+		H-&gt;Capaity *= 2;
+		H-&gt;Nodes = (HeapNode*) realloc (H-&gt;Nodes, sizeof(HeapNode)
+			   * H-&gt;Capacity);
+	}
+
+	H-&gt;Nodes[CurrentPosition].Data = NewData;
+
+	// 후속처리
+	while(CurrentPosition &gt; 0 
+		&amp;&amp; H-&gt;Nodes[CurrentPosition].Data &lt; H-&gt;Nodes[ParentPosition].Data){
+		HEAP_SwapNodes(H, CurrentPosition, ParentPosition);
+		
+		CurrentPosition = ParentPosition;
+		ParentPostion = HEAP_GetParent(CurrentPosition);
+	}
+	H-&gt;UsedsSize++;
+}</code></pre><h3 id="2b1bd761-eac0-4d8a-a8e8-6992e8109141" class="">힙의 최소값 삭제 구현</h3><p id="6616cc1e-51b1-4b17-a14f-a80875387500" class="">Heap_DeleteMin() 함수</p><pre id="46425c91-1077-4007-8387-3801a86ca963" class="code"><code>void HEAP_DeleteMin(Heap* H, HeapNode* Root){
+	int ParentPosition = 0;
+	int LeftPostion = 0;
+	int RightPostion = 0;
+
+	memcpy(Root, &amp;H-&gt;Nodes[0], sizeof(HeapNode));
+	memset(&amp;H-&gt;Nodes[0], 0, sizeof(HeapNode));
+
+	H-&gt;UsedSize--;
+	HEAP_SwapNodes(H, 0, H-&gt;UsedSize);
+
+	LeftPosition = HEAP_GetLeftChild(0);
+	RightPostion = LeftPostion + 1;
+
+	while(1){
+		int SelectedChild = 0;
+		
+		if(LeftPostion &gt;= H-&gt;UsedSize)
+			break;
+		if(RightPosition &gt;= H-&gt;UsedSize){
+			SelectedChild = LeftPosition;
+		} else {
+			if(H-&gt;Nodes[LeftPosition].Data &gt; H-&gt;Nodes[RightPosition].Data)
+				SelectedChild = RightPosition;
+			else
+				SelectedChild = LeftPosition;
+		}
+		if(H-&gt;Nodes[SelectedChild].Data &lt; H-&gt;Nodes[ParentPosition].Data){
+			HEAP_SwapNodes(H, ParentPostion, SelectedChild);
+			ParentPostion = SelectedChild;
+		} else 
+			break;
+
+		LeftPostion = HEAP_GetLeftChild(ParentPostion);
+		RightPosition = LeftPosition + 1;
+	}
+	if(H-&gt;UsedSize &lt; (H-&gt;Capacity/2){
+		H-&gt;Capacity/=2;
+		H-&gt;Nodes=(HeapNode*)realloc(H-&gt;Nodes,sizeof(HeapNode)*H-&gt;Capacity);
+	}
+}</code></pre><h3 id="027365a3-36da-4da1-a93b-80b5e703e1c7" class="">힙 예제 프로그램</h3><pre id="d6bed0d5-f733-4d41-827d-ff2c80bc5c33" class="code"><code>Heap.h
+#ifndef HEAP_H
+#define HEAP_H
+
+#include &lt;stdio.h&gt;
+#include &lt;memory.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+
+typedef struct tagHeapNode{
+    ElementType Data;
+} HeapNode;
+
+typedef struct tagHeap{
+    HeapNode* Nodes;
+    int Capacity;
+    int UsedSize;
+} Heap;
+
+Heap* HEAP_Create(int InitialSize);
+void  HEAP_Destroy(Heap* H);
+void  HEAP_Insert(Heap* H, ElementType NewData);
+void  HEAP_DeletMin(Heap* H, HeapNode* Root);
+int   HEAP_GetParent(int Index);
+int   HEAP_GetLeftChild(int Index);
+void  HEAP_SwapNodes(Heap* H, int Index1, int INdex2);
+void  HEAP_PrintNodes(Heap* H);
+
+#endif</code></pre><pre id="cb57bb41-ba2b-484d-a039-51ab164e0f64" class="code"><code>#include &quot;Heap.h&quot;
+
+Heap* HEAP_Create(int InitialSize){
+    Heap* NewHeap = (Heap*)malloc(sizeof(Heap));
+    NewHeap-&gt;Capacity = IntitialSize;
+    NewHeap-&gt;UsedSize = 0;
+    NewHeap-&gt;Nodes = (HeapNode*)malloc(sizeof(HeapNode)*NewHeap-&gt;Capacity);
+
+    printf(&quot;size : %d\n&quot;, sizeof(HeapNode));
+
+    return NewHeap;
+}
+
+void HEAP_Destroy(Heap* H){
+    free(H-&gt;Nodes);
+    free(H);
+}
+
+void HEAP_Insert(Heap* H, ElementType NewData){
+    int CurrentPosition = H-&gt;UsedSize;
+    int ParentPosition = HEAP_GetParent(CurrentPosition);
+
+    if(H-&gt;UsedSize == H-&gt;Capacity){
+        H-&gt;Capacity *= 2;
+        H-&gt;Nodes = (HeapNode*) realloc(H-&gt;Nodes, sizeof(HeapNode)*H-&gt;Capacity);
+    }
+
+    H-&gt;Nodes[CurrentPosition].Data = NewData;
+
+    // 후속 처리
+    while(CurrentPosition &gt;  0 &amp;&amp; H-&gt;Nodes[CurrentPosition].Data &lt; H-&gt;Nodes[ParentPosition].Data){
+        HEAP_SwapNodes(H, CurrentPosition, ParentPosition);
+
+        CurrentPosition = ParentPosition;
+        ParentPosition = HEAP_GetParent(CurrentPosition);
+    }
+    H-&gt;UsedSize++;
+}
+
+void HEAP_SwapNodes(Heap* H, int Index1, int Index2){
+    int CopySize= sizeof(HeapNode);
+    HeapNode* Temp = (HeapNode*) malloc(CopySize);
+
+    memcpy(Temp, &amp;H-&gt;Nodes[Index1], CopySize);
+    memcpy(&amp;H-&gt;Nodes[Index1], &amp;$H-&gt;Nodes[Index2], CopySize);
+    memcpy(&amp;H-&gt;Nodes[Index2], Temp, CopySize);
+
+    free(Temp);
+}
+
+void HEAP_DeleteMin(Heap* H, HeapNode* Root){
+	int ParentPosition = 0;
+	int LeftPostion = 0;
+	int RightPostion = 0;
+
+	memcpy(Root, &amp;H-&gt;Nodes[0], sizeof(HeapNode));
+	memset(&amp;H-&gt;Nodes[0], 0, sizeof(HeapNode));
+
+	H-&gt;UsedSize--;
+	HEAP_SwapNodes(H, 0, H-&gt;UsedSize);
+
+	LeftPosition = HEAP_GetLeftChild(0);
+	RightPostion = LeftPostion + 1;
+
+	while(1){
+		int SelectedChild = 0;
+		
+		if(LeftPostion &gt;= H-&gt;UsedSize)
+			break;
+		if(RightPosition &gt;= H-&gt;UsedSize){
+			SelectedChild = LeftPosition;
+		} else {
+			if(H-&gt;Nodes[LeftPosition].Data &gt; H-&gt;Nodes[RightPosition].Data)
+				SelectedChild = RightPosition;
+			else
+				SelectedChild = LeftPosition;
+		}
+		if(H-&gt;Nodes[SelectedChild].Data &lt; H-&gt;Nodes[ParentPosition].Data){
+			HEAP_SwapNodes(H, ParentPostion, SelectedChild);
+			ParentPostion = SelectedChild;
+		} else 
+			break;
+
+		LeftPostion = HEAP_GetLeftChild(ParentPostion);
+		RightPosition = LeftPosition + 1;
+	}
+	if(H-&gt;UsedSize &lt; (H-&gt;Capacity/2){
+		H-&gt;Capacity/=2;
+		H-&gt;Nodes=(HeapNode*)realloc(H-&gt;Nodes,sizeof(HeapNode)*H-&gt;Capacity);
+	}
+}
+
+int HEAP_GetParent(int Index){
+    return (int) ((Index-1)/2);
+}
+
+int HEAP_GetLeftChild(int Index){
+    return (2*Index)+1;
+}
+
+void HEAP_PrintNodes(Heap* H){
+    int i = 0;
+    for(i=0; i&lt;H-&gt;UsedSize; i++){
+        printf(&quot;%d &quot;, H-&gt;Nodes[i].Data);
+    }
+    printf(&quot;\n&quot;);
+}</code></pre><h3 id="c26aae12-3a7a-41cf-958d-95ca68b86c1c" class="">힙을 이용한 우선순위 큐의 구현</h3><p id="7b842373-a4d4-42bb-b081-ec64dd12282a" class="">힙은 최소값을 즉시 얻어낼수 있게한다는 점에서 우선순위 큐를 구현하는데 아주 적격인 자료구조다.</p><ul id="5f770399-790d-469e-9c56-f2c32ffa43fa" class="bulleted-list"><li>노드 구조체에 Priority 필드 추가</li></ul><ul id="66452f50-f0c6-451f-8141-44abc95f97b3" class="bulleted-list"><li>노드 구조체의 Data 필드 자료형을 void*로 변경</li></ul><ul id="5cbd766f-ad97-44ed-bca4-9bf9c7c9fc4b" class="bulleted-list"><li>삽입/삭제 함수의 이름을 HEAP_Insert()/HEAP_DeleteMin()에서 PQ_Enqueue()/PQ_Dequeue()로 변경</li></ul><p id="db240589-f011-4f11-b780-09c7c1de6d94" class="">Data 필드 자료형을 void*로 변경한 것은 다양한 자료형을 우선순위 큐 안에 담을 수 있도록 하기 위해서이다. 그 예(최소신장트리, 다익스트라의 최단 경로 알고리즘, 허프만 압축 알고리즘 등)</p><pre id="b690b3ec-14d4-4ab9-a17e-39e969feb17a" class="code"><code></code></pre></div></article></body></html>

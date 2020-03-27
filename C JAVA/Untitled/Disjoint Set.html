@@ -1,0 +1,633 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Disjoint Set</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="d28a9699-2d38-4428-b15e-0daf3af898ff" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🙄</span></div><h1 class="page-title">Disjoint Set</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Queue &amp; Tree</span></td></tr></tbody></table></header><div class="page-body"><h3 id="60ca9d99-e482-4c0a-9ab2-b18f48f71e16" class="">분리집합 : 교집합(Intersection)을 갖지 않는 집합들</h3><p id="9d36c470-0c37-4759-849b-b49b0403e83c" class="">사용처 : 분리집합은 교집합이 없기 때문에 서로 구분되어야하는 데이터 집합을 다룰 때 아주 유용!
+
+책에서는 책가게 판매 관리 프로그램을 예를 든다. 책의 가격 정보가 아래 같은 자료구조로 정의된다고 치면 ISBN은 전세계에서 유일한 고유 식별 번호이고, Price는 가격을 나타낸다.</p><pre id="64484e19-f46e-4d4a-bb94-83c4a7c32a5c" class="code"><code>typedef struct tagBookPrice{
+	usigned long ISBN;
+	unsiged long Price;
+} BookPrice;</code></pre><p id="2c8538c3-c0d5-4b86-b8e3-3b05c8e03a7d" class="">베스트 셀러인 것들을 할인 행사를 한다고 했을 경우 할인 행사는 임시적이기 때문에 BookPrice 구조체의 Price값을 바꿔서는 안된다. 행사가 끝난 후 원래의 값을 일일이 입력해야하는 번거로움이 있기 때문이다.
+이 때 일반 도서 집합과 베스트 셀러 집합만들고 베스트 셀러들의 BookPrice가 베스트 셀러 집합의 원소가 되게 하는 것이다. 해당 BookPrice 개체가 베스트 셀러 집합에 속해있는지의 여부만 알면 할인 가격으로 판해할지 원래 가격으로 판매할지를 알 수 있다.
+행사가 끝난 뒤 집합에서 모든 우너소를 일반도서 집합으로 옮기기만 하면 모든 것이 원래대로 돌아간다.</p><h3 id="bc603156-8ba7-468f-ae5b-0a529140c174" class="">이처럼 Disjoint Set은 원소 또는 개체가 어느 집합에 소속되어있는가?란 정보를 바탕으로 알고리즘에 응용할수 있다. 위의 예는 어떤 한 원소가 소속되어있는 집합을 알아내는 것을 말하는데 이를 집합 탐색이라고한다.</h3><p id="22da4fe4-ea66-4d0f-a748-5a16fed6298f" class="">
+</p><h2 id="ff0b3ad6-7ba3-4dc5-b17d-144fdfd426e7" class="">분리집합의 표현: 트리는 부모가 자식을 가리키는데
+분리집합은 자식이 부모를 가리킨다.</h2><pre id="0260d783-42b7-41bc-a534-d8dd7f92c180" class="code"><code>typedef struct tagDisjointSet{
+	struct tagDisjointSet* Parent;
+	void* Data;
+} DisjointSet;</code></pre><p id="8e81ff2f-f433-4b21-9a8a-e9741c0eac1a" class="">자식 노드에 대한 포인터는 없고 오로지 부모 노드에 대한 포인터만 있고, 루트 노드는 부모가 없으므로 루트 노드의 부모는 NULL이 된다. Data필드가 void* 형으로 선언된 이유는 어떤 자료형의 데이터든지 입력할 수 있게 하기 위해서이다.</p><p id="df9b4d6b-7d9a-4619-8b56-e089d7494062" class="">
+</p><h3 id="e8ca1d2e-bd54-48db-9921-554e99230afc" class="">분리 집합의 연산</h3><p id="b07b21f0-ccbd-4d27-b9e5-ab685d275887" class="">연산은 두가지로 합집합과 , 집합 탐색이다. 왜 다른 연산은 필요없냐면 분리 집합의 목적은 원소가 어느 집합에 귀속되어있는지를 쉽게 알아내기 위해 있는데 분리 집합의 원소를 정렬한다거나 순차적으로 접근하는 것은 분리 집합의 목적과 맞지 않기 때문에 두가지 연산만 있다.</p><h3 id="ff52d56d-a93f-46f8-bd41-3c57f9eb6854" class="">합집합(Union)</h3><p id="39438dda-d860-4e75-a86a-bf2b86cb7899" class="">두 집합을 더하는 연산이다.</p><pre id="a5d6c05d-dfc8-43ad-af17-fe883cb394ba" class="code"><code>void DS_UnionSet(DisjointSet* Set1, DisjointSet* Set2){
+	Set2 = DS_Find(Set2)
+	Set2-&gt;Parent = Set1
+}</code></pre><h3 id="b0f267fe-0539-4d6e-bc41-3901aa2398bf" class="">집합 탐색</h3><p id="1b273559-d0e7-4079-acd0-bbba0829b52c" class="">원소가 속해있는 집합을 찾는 연산이다.집합 내의 어떤 노드든 나타내는 집합이 곧 자신이 속해있는 집합이므로, 원소가 어떤 집합에 속해 있는지 알려면 트리의 노드를 찾으면 된다.</p><pre id="e8a2e948-0564-48c0-8d8c-6fb24ee8d115" class="code"><code>DisjointSet* DS_FindSet(DisjointSet* Set){
+	while(Set-&gt;Parent != NULL){
+		Set = Set-&gt;Parent;
+	}
+	
+	return Set;
+}</code></pre><p id="215af575-518e-460d-90f1-4cc702fbea84" class="">
+</p><h3 id="2149aaad-731e-437c-96fc-f1c4a64f7010" class="">분리 집합 예제 프로그램</h3><pre id="0862f0fc-07ef-4051-9fc7-b29b81788f99" class="code"><code>DisjointSet.h
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#ifndef DISJOINTSET_H
+#define DISJOINTSET_H
+
+typdef struct tagDisjointSet{
+	struct tagDisjointSet* Parent;
+	void* Data;
+} DisjointSet;
+
+void DS_UnionSet(DisjointSet* Set1, DisjointSet* Set2);
+DisjointSet* DS_FindSet(DisjointSet* Set);
+DisjointSet* DS_MakeSet(void* NewData);
+void DS_DestroySet(DisjointSet* Set);
+
+#endif</code></pre><pre id="8d620ed0-aabe-4bf1-94d9-84cdeb65b72b" class="code"><code>DisjointSet.c
+
+#include &quot;DisjointSet.h&quot;
+
+void DS_UnionSet(DisjointSet* Set1, DisjointSet* Set2){
+	Set2 = DS_Find(Set2)
+	Set2-&gt;Parent = Set1
+}
+
+DisjointSet* DS_FindSet(DisjointSet* Set){
+	while(Set-&gt;Parent != NULL){
+		Set = Set-&gt;Parent;
+	}
+	
+	return Set;
+}
+
+DisjointSEt* DS_MakeSet(void* NewData){
+	DisjointSet* NewNode = (DisjointSet)malloc(sizeof(DisjointSet));
+	NewNode-&gt;Data = NewData;
+	NewNode-&gt;Parent = NULL;
+	
+	return NewNode;
+}
+
+void DS_DestroySet(DisjointSet* Set){
+	free( Set);
+}</code></pre></div></article></body></html>

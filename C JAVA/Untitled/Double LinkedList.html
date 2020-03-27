@@ -1,0 +1,620 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Double LinkedList</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="d88f5185-42b1-4526-8127-d6c0ee6228c3" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">😄</span></div><h1 class="page-title">Double LinkedList</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">List &amp; Stack</span></td></tr></tbody></table></header><div class="page-body"><p id="0f8d0a0d-ecf2-4fbb-a872-e0c833a8a4c6" class="">링크드 리스트의 탐색 기능을 개선한 자료구조 → 링크드 리스트의 일방향으로 탐색을 한다. 더블은 양방향으로 한다는 장점이 있다.</p><div id="9c786767-a680-4326-935f-f6239a111c80" class="column-list"><div id="3e490de9-cec2-42ac-9ac9-61b0475c6021" style="width:50%" class="column"><pre id="df64c983-5fd1-4cc5-be56-df0a2020f6a9" class="code"><code>typedef struct tagNode{
+	int Data; // 데이터 필드
+	struct tagNode* PrevNode; // 이전 노드를 가리키는 포인터
+	struct tagNode* NextNode; // 다음 노드를 가리키는 포인터
+} Node;</code></pre></div><div id="03764d9a-02e6-4d93-8541-f746faf7ff34" style="width:50%" class="column"><figure id="18bc412e-5162-4580-a6f3-07d1bad74ef2" class="image"><a href="Double%20LinkedList/Untitled.png"><img style="width:384px" src="Double%20LinkedList/Untitled.png"/></a></figure></div></div><h3 id="72dac68a-a9ea-483e-a154-a8dad5db66f2" class="">더블 링크드 리스트는 링크드 리스트에서 이전 노드를 처리하기 위한 구현이 추가 될 뿐이다.
+
+노드 생성/소멸</h3><div id="52e2110c-eb4c-416c-be1e-74a08c3bc0cb" class="column-list"><div id="9de776f7-6488-4c3a-bdfe-4775934a22c5" style="width:50%" class="column"><p id="34688f3a-dbc1-4af5-8051-41481b6d9fab" class="">노드를 생성하는 DLL_CreateNode() 함수, 링크드 리스트의 버전과 비교하면 PrevNode에 Null을 대입하여 초기화한 것만 다르다.
+제거하는 DestroyNode()함수는 링크드리스트와 동일하다. free()함수를 호출하는 것뿐이기 때문이다.</p></div><div id="5cccd608-1ca0-4568-89ce-e7634270f19b" style="width:50%" class="column"><h3 id="c154d072-da13-4fdd-a33e-84c149e30c5a" class="">노드 추가</h3><p id="2d23e845-93bb-4bc5-9909-6127760136d6" class="">링크드 리스트와 다른 점은 PrevNode에 기존 테일의 주소를 가리키게 해야한다.</p></div></div><div id="7e887eb6-47cd-430e-b296-2cbb2967da33" class="column-list"><div id="3cfdf23e-626a-48a7-8ed5-bb9b00956723" style="width:50%" class="column"><pre id="bd618536-b8c4-4608-9b99-ddbb705d5902" class="code"><code>Node* DLL_CreateNode(ElementType NewData){
+	Node* NewNode = (Node*)malloc(sizeof(Node));
+	NewNode-&gt;Data = NewData;
+	NewNode-&gt;PrevNode = NULL;
+	NewNode-&gt;NextNode = NULL;
+}
+
+void DLL_DestroyNode(Node* node){
+	free(Node);
+}</code></pre><h3 id="fc5c47f5-4323-449d-9d85-844429abb66d" class="">노드 탐색 (링크드 리스트와 동일하다)</h3><h3 id="560cae42-0dd8-41bf-9b4c-3a1ca11983cd" class="">노드 삭제</h3><p id="604f9683-9808-48a6-91a3-3d54e749d59a" class="">삭제할 노드의 양쪽 포인터 두 개, 이전 노드의 NextNode 포인터, 이후노드의 PrevNode 포인터 4개의 포인터를 다뤄야해서 골치가 아프다.</p><pre id="2d9f8dc5-bfcf-4d4c-851e-4d9cf7237216" class="code"><code>void DLL_RemoveNode(Node** Head, Node* Remove){
+	if(*Head == Remove){
+		*Head = Remove-&gt;NextNoode;
+		if( (*Head) != NULL )
+			(*Head)-&gt;PrevNode = NULL;
+		
+		Remove-&gt;PrevNode = NULL;
+		Remove-&gt;NextNode = NULL:
+	} else {
+		Node* Temp = Remove;
+		
+		if( Remove-&gt;PrevNode != NULL)
+			Remove-&gt;PreveNode-&gt;NextNode = Temp-&gt;NextNode;
+		if( Remove-&gt;NextNode != NULL )
+			Remove-&gt;NextNode-&gt;PrevNode = Temp-&gt;PrevNode;
+
+		Remove-&gt;PrevNode = NULL:
+		Remove-&gt;NextNode = NULL;
+	}
+}</code></pre><h3 id="ab1cc744-8d5a-42ef-8962-4cbaf63e63c9" class="">전체 코드</h3></div><div id="6b98b178-fd1d-413f-841e-5db413fc1561" style="width:50%" class="column"><pre id="006fd02a-2c6d-49a6-bc1e-7e33a5e9acfc" class="code"><code>void DLL_AppendNode(Node** Head, Node* NewNode){
+	if( (*Head) == NULL){
+		*Head = NewNode;
+	} else {
+		Node* Tail = (*Head);
+		while(Tail-&gt;NextNode != NULL){
+			Tail = Tail-&gt;NextNode;
+	}
+	Tail-&gt;NextNode = NewNode;
+	NewNode-&gt;PrevNode = Tail; // 기존의 테일의 PrevNode가 가리킨다.
+	}
+}</code></pre><h3 id="32f80ecb-548f-47af-b97d-928dca403850" class="">노드 삽입</h3><p id="0ef03440-2dae-408e-a8a5-e462c0027a8d" class="">노드를 삭제할 때 일어나는 포인터 교환이 꼬이고 꼬여 복잡하다. 삽입도 복잡하긴하다.</p><pre id="5ff2d3f9-c348-45c1-99c1-d377ea1dd73b" class="code"><code>void DLL_InserAfter(Node* Current, Node* NewNode){
+	NewNode-&gt;NextNode = Current-&gt;NextNode;
+	NewNode-&gt;PrevNode = Current;
+	
+	if(Current-&gt;NextNode != NULL){
+		Current-&gt;NextNode-&gt;PrevNode = NewNode;
+	}
+		Current-&gt;NextNode = NewNode;
+	}</code></pre><h3 id="694d59c4-ac92-497f-b466-3bfe5556730a" class="">노드 개수 세기 링크드 리스트와 동일</h3><p id="e812d6d5-ffba-4598-8512-958ac65fcc17" class="">
+</p></div></div></div></article></body></html>

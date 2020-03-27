@@ -1,0 +1,824 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Binary Search Tree</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="004c3043-1634-4f27-81b2-44fb70c6e885" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🙈</span></div><h1 class="page-title">Binary Search Tree</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th>Status</th><td><span class="selected-value">Sort &amp; Search</span></td></tr></tbody></table></header><div class="page-body"><p id="db40cdcd-0581-465c-bcb1-50ce86672639" class="">이진 탐색 트리는 이진 탐색을 위한 트리이며, 탐색을 위한 이진 트리이다.
+다시 정리하면 <mark class="highlight-teal">이진 탐색 트리</mark>는 <mark class="highlight-orange">이진 탐색을 위한 이진 트리</mark>이다. 이진 트리는 자식 노드가 최대 두개인 트리이다. </p><h3 id="8218f2bf-ad6b-4068-b3cd-3b7f191263fe" class="">이진 탐색 알고리즘이 있는데 왜 이진 탐색 트리가 필요할까?</h3><p id="6cf73fe4-c540-432c-b158-25eaeb455e35" class="">이진 탐색은 데이터 집합이 배열인 경우에만 사용이 가능하기 때문이다. 왜냐하면 처음과 끝을 알고 있어야지만 중앙 요소를 뽑아 낼 수 있는데 링크드 리스트는 그게 불가능 하기 때문이다. → 처음과 끝은 알아도 중앙 요소가 무엇인지 알 수가 없다.
+<mark class="highlight-orange">⇒ 정리하면 사전의 크기가 정의된 데이터 집합엔 이진 탐색이 가능하나 동적으로 그 크기가 달라지는 데이터 집합엔 이진 탐색 알고리즘을 사용하지 못한다.</mark></p><hr id="4c00f1b3-de3c-478c-99b9-d3dac681aac2"/><h3 id="f1e87298-b3fa-41a3-a6b1-e81b440e08f0" class="">이진 탐색트리의 차이점</h3><p id="2db5cb4b-3d20-4315-832e-cc34de0769e7" class="">이진 탐색 트리는 하나의 추가적 규칙을 따르고 있다. &quot;왼쪽 자식 노드는 나보다 작고, 오른쪽 자식 노드는 나보다 크다. 그리고 앞에서 봤던 이진 트리처럼 균형이 안 잡혀있어도 규칙만 따르면 상관없다.
+그림 첨부할것</p><h3 id="15bca21b-4815-4df9-977c-6170e3eca32f" class="">이진 탐색 트리의 기본 연산</h3><p id="278202b5-6948-4460-98f3-a3909cc101b7" class="">가장 중요한 연산은 탐색 연산이다. 그리고 이후 노드의 삽입 삭제에 대해 알아볼 것이다.</p><h3 id="44f945cc-e36e-498f-8da0-f59e606ca091" class="">이진 탐색 트리에서의 이진 탐색</h3><p id="7b4a80a1-2935-489c-8cb9-a661b7dcd800" class="">이진 탐색에서의 탐색은 <mark class="highlight-orange">이진 탐색 트리의 정의와 구조</mark>만 알고 있다면 다 이해한 것과 다름이 없다.
+1. 이진 탐색을 위한 이진 트리이다. 2. 각 노드는 왼쪽 자식 노드보다 크고, 오른쪽 자식 노드보다 작다. 2번은 이진 탐색을 위한 중요한 단서가 된다. 그것은 각 노드가 중앙 요소라는 점이다.
+ex) 루트 노드가 23이고 23은 트리 전체의 중앙 요소다. 11도 왼쪽 하위 트리에서의 중앙 값이고 139도 동일하게 들어간다.</p><div id="7f06491e-212f-41f4-bf10-15cb96ca57e4" class="column-list"><div id="65ecb06d-aeb6-4d1d-bf4f-7637f33b9d8a" style="width:50%" class="column"><figure id="5640ea46-5d4e-4330-9031-7700d09718c8" class="image"><a href="Binary%20Search%20Tree/BEE9181B-F2C7-4532-9A37-CD6C5680AC1A.jpeg"><img style="width:1380px" src="Binary%20Search%20Tree/BEE9181B-F2C7-4532-9A37-CD6C5680AC1A.jpeg"/></a></figure></div><div id="4f6277cd-5a9f-48f0-98d8-a96bf9b824bf" style="width:50%" class="column"><p id="16fb1827-03f0-445d-a227-4218ca34f99d" class="">중앙 요소를 찾아 좌/우 대소를 비교하여 탐색 범위를 정하고 또 다시 중앙 요소를 찾아 좌/우 대소 비교하는 과정을 반복하는 과정은 배열에 대한 이진 탐색과 다를 것이 없다.
+67을 찾는다면 ? 왼쪽 사진과 동일하게 진행 될 것 이다.</p></div></div><pre id="15756e70-a1ad-4f97-9fa1-ab8a2711e9be" class="code"><code>BSTNode* BST_SearchNode(BSTNode* Tree, ElementType Target){
+	if(Tree == NULL)
+		return NULL;
+	if(Tree-&gt;Data = Target)
+		return Tree;
+	else if(Tree-&gt;Data &gt; Target)
+		return BTS_SearchNode(Tree-&gt;Left, Target)
+	else
+		return BTS_serachNode(Tree-&gt;Right, Target)
+}</code></pre><h3 id="9830518d-837e-45b6-bbbe-652778f1792e" class="">이진 탐색 트리의 노드 삽입</h3><p id="8226ecd8-fcc4-439a-89ac-762f637b3b42" class="">이진 탐색 트리에서 노드 삽입 연산은 &quot;<mark class="highlight-orange">새 노드가 삽입 될 곳은 어디인가&quot;를 찾아 내는 것이 핵심</mark>이다. 즉, 새 노드가 삽입될 곳을 이진 탐색으로 찾아야한다는 것이다.</p><div id="86473a79-a75c-448e-8e01-a0bf2f47094f" class="column-list"><div id="e95860f4-c54a-43e0-9658-891952d86a77" style="width:50%" class="column"><figure id="0141818d-8b15-46d1-90b0-35bf36996eed" class="image"><a href="Binary%20Search%20Tree/873B9F99-69BE-44A9-9B5C-AE3271E5C674.jpeg"><img style="width:1298px" src="Binary%20Search%20Tree/873B9F99-69BE-44A9-9B5C-AE3271E5C674.jpeg"/></a></figure></div><div id="bbdc9396-ad75-48d1-acfa-7ba521baa49c" style="width:50%" class="column"><p id="b1abd74a-2b16-4c29-82c3-fbf406399534" class="">예를 들어 14를 삽입한다는 경우 23보다 작아서 11 노드로 넘어가고 11보다 크니 오른쪽으로 하위 트리에 넣는다. 이 때 11의 오른쪽 자식 트리가 없으니 새 노드를 넣으면 된다.</p></div></div><pre id="8cefc0f9-a5bf-4d9b-bf2c-e261da4e4c63" class="code"><code>void BST_InsertNode(BSTNode** Tree, BSTNode *Child){
+	if( (*Tree)-&gt;Data &lt; Child-&gt;Data){
+		if( (*Tree)-&gt;Right == NULL )
+			(*Tree)-&gt;Right = Child;
+		else
+			BST_InsertNode(&amp;(*Tree)-&gt;Right, Child);
+	} else if( (*Tree)-&gt;Data &gt; Child-&gt;Data){
+		if( (*Tree)-&gt;Left == NULL)
+			(*Tree)-&gt;Left = Child;
+		else
+			BST_InsertNode(&amp;(*Tree)-&gt;Left, Child);
+	}
+}</code></pre><h3 id="06a4808d-664d-4914-affe-cc148b6bf61a" class="">이진 탐색 트리의 노드 삭제</h3><ol id="e420c3d8-4b10-423c-a0bc-a0e15dc67067" class="numbered-list" start="1"><li>먼저 삭제한 노드를 찾아야한다. → 이진 탐색으로 찾는다.</li></ol><ol id="32d9d80a-879d-49e8-a775-7c0c2b8b220c" class="numbered-list" start="2"><li>노드가 어디 있는지 알아낸 후 → 노드를 트리에서 떼어낸다. 
+ 잎 노드 경우 NULL로 포인터를 봉합하고 삭제한 노드의 주소를 반환하면 된다.</li></ol><p id="b2ac0dcf-d1c9-4e18-975b-63dee5201de4" class=""><strong>첫 번째 양쪽 자식 노드를 가지고 있는 경우
+두 번째 왼/오른쪽 중 어느 한쪽 자식 노드만 가지고 있는 경우</strong></p><div id="9e400b3e-38eb-4be5-8cab-4a9965d09eb6" class="column-list"><div id="8ef8adb2-4792-49cb-b486-5d775279a892" style="width:50%" class="column"><figure id="45bbd083-2dfd-4cf4-a19f-43d4b8e6205f" class="image"><a href="Binary%20Search%20Tree/E1B373CF-A7C1-416B-A2F0-C784C322E811.jpeg"><img style="width:288px" src="Binary%20Search%20Tree/E1B373CF-A7C1-416B-A2F0-C784C322E811.jpeg"/></a></figure></div><div id="ea301868-58b5-47bf-8407-ec43087669d9" style="width:50%" class="column"><p id="e9434915-e2bb-4cee-9668-d83dbf5372e1" class="">두번째 경우 139를 삭제하고 67을 23에 연결하면 된다. 간단 명료</p></div></div><div id="0738a3a0-38c9-487a-89a2-8ca070c5ee4e" class="column-list"><div id="d9bc5a40-e1ab-4a27-bf2a-c30fca764914" style="width:50%" class="column"><figure id="ed01c7b8-4fb2-452c-924c-4a9dc0b58540" class="image"><a href="Binary%20Search%20Tree/DFFDEB1C-04D2-4F6F-9291-0022FBB31450.jpeg"><img style="width:384px" src="Binary%20Search%20Tree/DFFDEB1C-04D2-4F6F-9291-0022FBB31450.jpeg"/></a></figure></div><div id="78fed30e-933c-41bf-8c65-3320e3f646b1" style="width:50%" class="column"><p id="1902a217-69a8-49f5-bfc1-b5a56f2a82a2" class="">첫번째 경우: 삭제된 노드의 오른쪽 하위 트리에서 가장 작은 값을 가진 노드( 이 노드를 최소값 노드라 부르자)를 삭제된 노드의 위치에 옮겨 놓으면 된다.
+그리고 최소값 노드에 자식이 없는 경우 빈자리에 옮겨 놓는 것으로 작업이 완료된다.
+하지만 오른쪽 자식만 남는 경우가 있다.(최소값 노드의 왼쪽 자식 노드는 있을 수가 없다 그렇다면 그 자식 노드가 최소값 노드이기 때문이다.)
+최소값 노드의 오른쪽 자식은 최소값 노드의 원래 부모에게 연결해주면 삭제 작업이 끝나게 된다.</p></div></div><pre id="f7c48a7c-0851-48be-b147-576052e579c1" class="code"><code>BSTNode* BST_RemoveNode(BSTNode* Tree, BSTNode* Parent, ElementType Target){
+	BSTNode* Removed = NULL;
+	if( Tree == NULL)
+		return NULL;
+
+	if(Tree-&gt;Data &gt; Target)
+		Removed = BST_RemoveNode(Tree-&gt;Left, Tree, Target);
+	else if(Tree-&gt;Data &lt; Target)
+		Removed = BST_RemoveNode(Tree-&gt;Right, Tree, Target);
+	else{ // 목표값을 찾은 경우
+		Removed = Tree;
+		
+		// 잎 노드인 경우 바로 삭제
+		if(Tree-&gt;Left == NULL &amp;&amp; Tree-&gt;Right == NULL){
+			if(Parent-&gt;Left == Tree)
+				Parent-&gt;Left = NULL;
+			else
+				Parent-&gt;Right = NULL;
+		} else {
+			// 자식이 양쪽 다 있는 경우
+			if(Tree-&gt;Left != NULL &amp;&amp; Tree-&gt;Right != NULL){
+			// 최소값 노드를 찾아 제거한 뒤 현재의 노드에 위치한다.
+				BSTNode* MinNode = BST_SearchMinNode(Tree-&gt;Right);
+				Removed = BST_Removed(Tree, NULL, MinNode-&gt;Data);
+				Tree-&gt;Data = MinNode-&gt;Data;
+			} else { 
+				// 자식이 하나만 있는 경우
+				BSTNode* Temp = NULL;
+				if(Tree-&gt;Left != NULL)
+					Temp = Tree-&gt;Left;
+				else
+					Temp = Tree-&gt;Right;
+			
+				if(Parent-&gt;Left == Tree)
+					Parent-&gt;Left = Temp;
+				else
+					Parent-&gt;Right = Temp;
+			}
+		}
+	}
+}</code></pre><h3 id="28c79645-86ff-47fd-b36a-6216c2783e73" class="">이진 탐색 트리 예제 프로그램</h3><pre id="0200990a-39e5-4021-b849-b5ee0c38e30b" class="code"><code>BinarySearchTree.h
+
+#ifdef BINARY_SEARCH_TREE_H
+#define BINARY_SEARCH_TREE_H
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef int ElementType;
+
+typedef struct tagBSTNode{
+    struct tagBSTNode* Left;
+    struct tagBSTNode* Right;
+
+    ElementType Data;
+} BSTNode;
+
+BSTNode* BST_SearchNode(ElementType NewData);
+void     BST_DestoryNode(BSTNode* Node);
+void     BST_DestoryTree(BSTNode* Tree);
+
+BSTNode* BST_SearchNode(BSTNode* Tree, ElementType Target);
+BSTNode* BST_SearchMinNode(BSTNode* Tree);
+void     BST_InsertNode(BSTNode* Tree, BSTNode *Child);
+BSTNode* BST_RemoveNode(BSTNode* Tree, BSTNode* Parent, ElementType Target);
+
+void BST_InorderPrintTree(BSTNode*  Node);
+
+#endif</code></pre><pre id="038a04ed-4983-42de-894d-bb075e2e0c7f" class="code"><code>BinarySearchTree.c
+
+#include &quot;BinarySearchTree.h&quot;
+
+BSTNode* BST_CreateNode(Element NewData){
+    BSTNode* NewNode = (BSTNode*)malloc(sizeof(BSTNode));
+    NewNode-&gt;Left = NULL;
+    NewNode-&gt;Right = NULL;
+    NewNode-&gt;Data = NewData;
+
+    return NewNode;
+}
+
+void BST_DestoryNode(BSTNode* Node){
+    free(Node);
+}
+
+void BST_DestroyTree(BSTNode* Tree){
+    if(Tree-&gt;Right != NULL)
+        BST_DestroyTree(Tree-&gt;Right);
+    if(Tree-&gt;Left != NULL)
+        BST_DestroyTree(Tree-&gt;Left);
+    
+    Tree-&gt;Left = NULL;
+    Tree-&gt;Right = NULL;
+
+    BST_DestoryNode(Tree);
+}
+
+BSTNode* BST_SearchNode(BSTNode* Tree, ElementType Target){
+    if(Tree == NULL)
+        return NULL;
+
+    if(Tree-&gt;Data == Target)
+        return Tree;
+    else if(Tree-&gt;Data &lt; Target)
+        return BST_SearchNode(Tree-&gt;Left, Target);
+    else
+        return BinarySearchTree(Tree-&gt;Rgiht, Target);    
+}
+
+BSTNode* BST_SerarchMinNode(BSTNode* Tree){
+    if(Tree == NULL)
+        return NULL;
+    
+    if(Tree-&gt;Left == NULL)
+        return Tree;
+    else
+        return BST_SerarchMinNode(Tree-&gt;Left);
+}
+
+void BST_InsertNode(BSTNode* Tree, BSTNode *Child){
+    if(Tree-&gt;Data &lt; Child-&gt;Data){
+        if(Tree-&gt;Right == NULL)
+            Tree-&gt;Right = Child;
+        else
+            BST_InsertNode(Tree-&gt;Right, Child);
+    } else if(Tree-&gt;Data &gt; Child-&gt;Data){
+        if(Tree-&gt;Left == NULL)
+            Tree-&gt;Left = Child;
+        else
+            BST_InsertNode(Tree-&gt;Left, Child);
+    }
+}
+
+BSTNode* BST_RemoveNode(BSTNode* Tree, BSTNode* Parent, ElementType Target){
+    BSTNode* Removed = NULL;
+
+    if(Tree == NULL)
+        return NULL;
+    
+    if(Tree-&gt;Data &gt; Target)//? 왜 변수에다가 불러올까?
+        Removed = BST_RemovedNode(Tree-&gt;Left, Target);
+    else if(Tree-&gt;Data &lt;Target)
+        Removed = BST_RemovedNode(Tree-&gt;Right, Target);
+    else{
+        Removed = Tree;
+
+        if(Tree-&gt;Left == NULL &amp;&amp; Tree-&gt;Right == NULL)
+            if(Parent-&gt;Left == Tree)
+                Parent-&gt;Left = NULL;
+            else
+                Parent-&gt;Right = NULL;
+        } else {
+            if(Tree-&gt;Left != NULL &amp;&amp; Tree-&gt;Right != NULL){
+                BSTNode* MinNode = BST_SearchMinNode(Tree-&gt;Right);
+                MinNode = BST_RemoveNode(Tree, NULL, MinNode-&gt;Data);
+                Tree-&gt;Data = MinNode-&gt;Data;
+            } else {
+                BSTNode* Temp = NULL;
+                if(Tree-&gt;Left != NULL)
+                    Temp = Tree-&gt;Left;
+                else
+                    Temp = Tree-&gt;Right;
+
+                if(Parent-&gt;Left == Tree)
+                    Parent-&gt;Left = Temp;
+                else
+                    Parent-&gt;Right = Temp;
+            }
+        }
+    }
+
+    return Removed;
+}
+
+void BSTNode_InorderPrintTree(BSTNode* Node){
+    if(Node == NULL)
+        return;
+    
+    BST_InorderPrintTree(Node-&gt;Left);
+
+    printf(&quot;%d &quot;, Node-&gt;Data);
+
+    BST_InorderPrintTree(Node-&gt;Right);
+}</code></pre><pre id="dd4363af-1df7-4736-a0b3-eccdcb9ef01f" class="code"><code>Test_BinarySerachTree.c
+
+#include &quot;BinarySearchTree.h&quot;
+
+int main(void){
+
+    BSTNode* Tree = BST_Create(123);
+    BSTNode* Node = NULL;
+
+    BST_InsertNode(Tree, BST_CreatNode(22));
+    BST_InsertNode(Tree, BST_CreatNode(9918));
+    BST_InsertNode(Tree, BST_CreatNode(424));
+    BST_InsertNode(Tree, BST_CreatNode(17));
+    BST_InsertNode(Tree, BST_CreatNode(3));
+
+    BST_InsertNode(Tree, BST_CreatNode(98));
+    BST_InsertNode(Tree, BST_CreatNode(34));
+
+    BST_InsertNode(Tree, BST_CreatNode(760));
+    BST_InsertNode(Tree, BST_CreatNode(317));
+    BST_InsertNode(Tree, BST_CreatNode(1));
+
+    BST_InorderPrintTree(Tree);
+    printf(&quot;\n&quot;);
+
+    printf(&quot;Removing 98...\n&quot;);
+
+    Node = BST_RemovedNode(Tree, NULL, 98);
+    BST_DestroyNode(Node);
+    
+    BST_InorderPrintTree(Tree);
+    printf(&quot;\n&quot;);
+
+    printf(&quot;Inserting 111..\n&quot;);
+
+    BST_InsertNode(Tree, BST_CreateNode(111));
+    BST_InsertPrintTree(Tree);
+    printf(&quot;n&quot;);
+
+    BST_DestroyTree(Tree);
+
+    return 0;
+}</code></pre><h3 id="6e9511c2-2fef-477e-ab25-3a095823b18e" class="">이진 트리 탐색의 문제점</h3><p id="dba67a97-a5ae-4f67-8bf5-63b9f754ce92" class="">동적으로 크기가 증가하는 데이터 집합에 대해서 잘 대처하며 탐색 속도도 훌륭하다. 하지만 기형적으로 이진 탐색 트리가 성장해서 검색의 효율을 극단적으로 떨어트리는 것입니다. ( 값이 계속 작아 왼쪽으로 계속 자식 트리가 생기는 경우나 오른쪽으로 계속 자식 트리가 생기는경우)
+그리고 더 문제인 것은 순수 이진 탐색 트리는 실제 데이터를 담는 경우 위와 같이 기형적으로 생길 확률이 높다는 것이다. ㅜㅜㅜㅜ
+그래서 레드 블랙 트리라는 것을 알아봐야한다.</p></div></article></body></html>
