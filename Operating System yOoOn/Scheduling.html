@@ -1,11 +1,5 @@
-<html><head><nav id="top-container"><a href="../index.html">Main</a></nav><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Scheduling</title><style>
-#top-container {
-	position: fixed;
-	z-index:999;
-	width:200px;
-	padding-bottom: 5px;
-	left: 30;}
-
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Scheduling</title><style>
+/* webkit printing magic: print all background colors */
 html {
 	-webkit-print-color-adjust: exact;
 }
@@ -29,7 +23,7 @@ body {
 
 body {
 	line-height: 1.5;
-	
+	white-space: pre-wrap;
 }
 
 a,
@@ -409,22 +403,69 @@ blockquote {
 	border-left: 3px solid rgb(55, 53, 47);
 }
 
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
 .bookmark-href {
 	font-size: 0.75em;
-	opacity: 0.5;
+	margin-top: 0.25em;
 }
 
 .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
-.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
-.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
-.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
 .pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
 
-.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
 
-.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
 
-.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
 
 .highlight-default {
 }
@@ -549,6 +590,16 @@ blockquote {
 .block-color-red_background {
 	background: rgb(251,228,228);
 }
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
 
 .checkbox {
 	display: inline-flex;
@@ -568,5 +619,33 @@ blockquote {
 	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
 }
 	
-</style></head><body><article id="680daf32-4987-4c9d-b684-1145a316370e" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="Scheduling/icon(3).png"/></div><h1 class="page-title">Scheduling</h1></header><div class="page-body"><p id="cc465d1e-29ea-4005-924f-cd669e09af07" class="">
-</p><hr id="76ad66ec-5163-4e44-95c9-18f0274a63cf"/><p id="c919b5eb-9143-4357-b5e5-4114aebc1bd2" class="">🐌아이콘 제작자: Smashicons</p><figure id="6909ca72-ded9-4d6c-8e34-e943a047ada0"><div class="bookmark source"><a href="https://www.flaticon.com/kr/authors/smashicons">Smashicons 디자인의 무료 벡터 아이콘</a><br/><a class="bookmark-href" href="https://www.flaticon.com/kr/authors/smashicons">https://www.flaticon.com/kr/authors/smashicons</a></div></figure></div></article></body></html>
+</style></head><body><article id="680daf32-4987-4c9d-b684-1145a316370e" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="Scheduling/icon(3).png"/></div><h1 class="page-title">Scheduling</h1></header><div class="page-body"><h3 id="f11e9747-30d2-4130-9eb1-3478c31ac47c" class="">지난 시간에 배운 이야기</h3><p id="47b64569-347d-4e64-84ab-6fb16ddbc92a" class="">핵심: <strong>CPU를 어떻게 Virtualization을 하느냐?</strong>
+방법: Time-Sharing을 한다.
+조그만한 Time slot을 나눈다 → 각각의 프로세스에 Time slot을 하나씩 배정한다
+Process가 Time Slot을 다 쓰고 안 내놓는 가능성이 있었다. ⇒ 초창기 Cooperative Approach 방식
+이 방식은 Prcocess가 자신의 load를 다 끝날 때까지 CPU를 손에 잡고 있거나 처리 시간이 너무 오래 걸린다면 알아서 CPU를 내놓을 것이라고 기대했었다.</p><p id="8b1bccf5-fab9-4aa6-8dbc-cc4ea6dfd17a" class="">Non-Cooperative Approach: 하드웨어 타이머를 사용하기로함
+하드웨어 타이머가 완료되었을 때 찾아가야하는 트랩핸들러를 부팅 과정에서 기록을 해놓는다. 그리고 타이머가 완료되면은 운영체제한테 제어권을 넘겨준다. 그러면 운영체제는 새로운 프로세스를 선정해서 CPU를 넘겨준다.
+이 과정은 Context-Switching을 하는 기본 machism이 된다.</p><p id="e6045e12-94b8-4971-973b-eb448f059c6a" class="">이 장에서는 Process를 어떻게 선정할지에 대해 배우게 된다.</p><hr id="d8e9f188-7d99-489b-ac7e-53860c90461d"/><h2 id="4c71a010-faf6-4ce0-b36f-9f47d33f999e" class="">Workload Assumption</h2><ul id="db4008c8-5037-40ec-b168-8496c49b2f85" class="toggle"><li><details open=""><summary>Each job runs for the same amount of time.</summary></details></li></ul><ul id="7163ef2c-c405-4a3b-800c-ea757e370064" class="toggle"><li><details open=""><summary>All jobs arrive at the same time.</summary></details></li></ul><ul id="7ffe848f-13dd-4249-b535-8d5b5df22ca3" class="toggle"><li><details open=""><summary>Once started, each job runs to completion.</summary></details></li></ul><ul id="ff8c93b4-dfca-4838-bed8-e0f8c67ce0fe" class="toggle"><li><details open=""><summary>All jobs only use the CPU(i.e., they perform no I/O</summary></details></li></ul><ul id="07021abf-042a-4264-87b8-1ae294de7416" class="toggle"><li><details open=""><summary>The run-time of each job is Known.</summary></details></li></ul><h3 id="da864281-5905-4bd7-aa49-3477e52a8cb1" class="">Scheduling metrics</h3><figure id="ec4cabeb-4fc3-450a-8ee9-79158397fc7c" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mi>t</mi><mi>u</mi><mi>r</mi><mi>n</mi><mi>a</mi><mi>a</mi><mi>r</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>d</mi><mo>=</mo><mi>T</mi><mi>c</mi><mi>o</mi><mi>m</mi><mi>p</mi><mi>l</mi><mi>e</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>−</mo><mi>T</mi><mi>a</mi><mi>r</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>a</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">Tturnaaround = Tcompletion-Tarrival</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">t</span><span class="mord mathdefault">u</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">n</span><span class="mord mathdefault">a</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault">m</span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span></span></div></figure><hr id="1cd8b29b-a53d-4d17-96a6-2ff3f6f7a655"/><h2 id="b1a5a10d-ed37-44be-b4ce-a017244f01aa" class="">Policies</h2><h3 id="661395c5-3e5d-4dc0-9023-ddf91a811b13" class="">First In, Firsst Out(FIFO)</h3><p id="f589f97d-f9f3-4918-a5d2-2617cac457a8" class="">FIFO scheduling or FCFS(First Come, First Served) scheduling.
+It is simple and easy to implement.?
+Example: Imagine three jobs(A,B,C) arrives in the system at roughly the same time. but A arrived faster than B, and B arrived faster than C. Assume each job runs for 10 seconds. What will the average turn-around time be for these jobs?</p><figure id="fbd4f1df-84d4-4091-a5a2-1981ccbf39e6" class="image"><a href="Scheduling/Untitled.png"><img style="width:586px" src="Scheduling/Untitled.png"/></a></figure><p id="c82159d4-c8f2-45e1-8dbd-d36cf0be1daa" class="">Example: Let&#x27;s again assume three jobs but this time A runs for 100 seconds while B and C run for 10 seconds.</p><figure id="07e43932-4cb2-4485-b63a-3cf3abf3e9c3" class="image"><a href="Scheduling/Untitled%201.png"><img style="width:576px" src="Scheduling/Untitled%201.png"/></a></figure><p id="814316dc-59d9-4d41-93ae-362f2a343fe4" class="">A = 100 B = 110 C = 120 A+B+C/3 = 110</p><h3 id="9d8bcc9a-3c20-4283-988c-a4122f53df97" class="">Convoy effect: a number of relatively-short potential consumers of a resource get queued behind a heavyweight resource consumer.</h3><h2 id="d7d10db8-5086-4616-9645-b6fd0fd91112" class="">Shortest job first(SJT)</h2><p id="dd960b07-61ee-4730-8046-30c9be864146" class="">It runs the shortest job first, then the next shortest, and so on.</p><figure id="1655641b-a5a3-4eb6-b63b-e4b5953c325c" class="image"><a href="Scheduling/Untitled%202.png"><img style="width:570px" src="Scheduling/Untitled%202.png"/></a></figure><p id="4c03a077-6aee-4250-8105-beb7a43c5d76" class="">Q: What is the average turn-arround time for the above case?</p><p id="9afb7854-dee5-459f-9f8c-2f219690745d" class="">C = 10 B = 20 A = 120 , 150/3 =50이다.</p><p id="6cd8fb79-847c-44cb-bcb6-08ef4aa2753b" class="">Example: Assume Arrives at t = 0 and needs to run for 100 seconds, whereas B and C arrive at t =10 and each needs to run for 10seconds. What is the average turn-around time?</p><figure id="88923585-ccd5-4fb1-b613-39b68e5da83c" class="image"><a href="Scheduling/Untitled%203.png"><img style="width:500px" src="Scheduling/Untitled%203.png"/></a></figure><h3 id="b14e0d87-0451-4787-bfc2-8150e2fb5fc7" class="">Shortest-Time-to-Completion First(STCF)</h3><p id="7334e6b7-92a3-4658-8dbf-ee793eb267f5" class="">Additional machinery: when another job arrives, the scheduler can preempt the currently running job and decide to run another job.
+STCF or Preemptive Shortest Job Frist(PSJF): SJT + preemption.
+Any time a new job enters the system, the STJF scheduler determines which of the remaining jobs (including the new job) has the least time left, and schedules that one.</p><figure id="cda0df18-7bd6-4824-a40e-3789500a0dc2" class="image"><a href="Scheduling/Untitled%204.png"><img style="width:541px" src="Scheduling/Untitled%204.png"/></a></figure><p id="769d80d2-7657-4df0-a237-5253d908ac07" class="">A = 120-0 B = 20-10 C = 30-10 150→ 50 평균 값</p><hr id="075defa1-7803-40eb-95f2-825ad4b9f37f"/><h3 id="7dc25c1e-c056-400b-b4fa-6f654252be2b" class="">A new metric: response time</h3><p id="7d90a1d5-6f5e-4470-ac36-b5dc963db1c8" class="">Response time: the time form when a job arrives in a system to the first time it is scheduled.</p><figure id="3aff3b92-ade7-43ff-b972-c704dc38ae08" class="image"><a href="Scheduling/Untitled%205.png"><img style="width:645px" src="Scheduling/Untitled%205.png"/></a></figure><h3 id="9b8c08fd-4c9c-4314-b3da-de91b5ac15a3" class="">Round Robin</h3><p id="acaf2b1c-92a4-42de-ab90-781c4079fae1" class="">Instead of running jobs to completion, RR runs a job for a time slice(or scheduling quantum) and then switches to the next job in the run queue.
+RR is sometimes called Time-Slicing.</p><figure id="f38b5981-5515-4719-88d3-a35e1615aed8" class="image"><a href="Scheduling/Untitled%206.png"><img style="width:664px" src="Scheduling/Untitled%206.png"/></a></figure><p id="e4860711-f80a-4032-b2fb-db251245dc97" class="">The cost of switching: OS actions of saving and restoring a few registers, state information in CPU caches, TLBs (translation lookaside buffer), branch predictors, and other on-chip hardware.
+Switching to another job causes the current state to be flushed and new state relevant to the currently-running job to be brought in.
+What is the turn-around time of RR?
+Turnaround time vs response time.</p><h3 id="9437a749-1a8e-4555-b1ed-560da851b211" class="">Incorporatin I/O</h3><p id="feef7025-0518-4b5a-b092-857b2dd91f75" class="">A scheduler clearly has a decision to make when a job initiates an I/O request because the currently-running job won&#x27;t be using the CPU during the I/O; it is waiting for I/O completion.
+The scheduler also has to make a decision when the I/O completes. when that occurs, an interrupt is raised, and the OS runs and moves the process that issued the I/O from blocked back to the ready state. It could decide to run the job at that point.</p><p id="17fdb201-134a-41a8-aa7e-f25c86dc0411" class="">
+</p><div id="0bfd3ecf-b8fe-45f8-a443-bab27669d5d9" class="column-list"><div id="a5fc7aa2-dc55-40b0-9fd0-189d2c6354dc" style="width:50%" class="column"><figure id="fd785659-a60e-4eec-91c0-79eb521b225c" class="image"><a href="Scheduling/Untitled%207.png"><img style="width:517px" src="Scheduling/Untitled%207.png"/></a></figure></div><div id="aad30288-e3a1-4f8f-a1ee-03bf60c8f18f" style="width:50%" class="column"><figure id="4fea1b94-a9da-4ef0-9948-db911e5e68e4" class="image"><a href="Scheduling/Untitled%208.png"><img style="width:669px" src="Scheduling/Untitled%208.png"/></a></figure></div></div><hr id="cff0b71b-b795-4941-9988-c16cfb4dca1b"/><h2 id="b84c09d9-fa2c-4965-a0c3-c6a0575df0d9" class="">The fundamental problem</h2><p id="f8dace21-920f-44f4-8b15-38956afc7794" class="">First, it would like to optimize turnaround time, which is done by running shorter jobs first; but, the OS doesn&#x27;t generally know how long a job will run for, exactly the knowledge that algorithms like SJT(or STCF) require.
+Second, MLFQ would like to make a system feel responsive to interactive users(i.e., users sitting and staring at the screen, waiting for a process to finish), and thus minimize response time; unfortunately, algorithms like Round Robin reduce response time but are trrible for turnaround time.</p><h3 id="bed0a8ea-f558-4b6d-b5c7-c6fa8bfe6122" class="">Question: How TO SCHEDULE WITHOUT RERFECT KNOWLEDGE?</h3><p id="b8fc5945-0a94-49a5-b73a-fde0f3c00632" class="">How can we design a scheduler that both minimizes response time for interactive jobs while also minimizing turnaround time without a priori knowledge of job length?</p><hr id="9987cecb-f1ad-48d4-9c68-d39e3d7401e7"/><h2 id="a8f681f5-9497-45b0-904a-df1dbc0e2afd" class="">MLFQ: Basic Rules</h2><h3 id="6703aec6-f053-44a1-b164-90a9b29ef51e" class="">Assumption: The MLFQ has a number of distinct queues, each assigned a different priority level.
+At any given time, a job that is ready to run is on a single queue.
+MLFQ uses priorities to decide which job should run at a given time.
+Basic rules for MLFQ:
+Rule 1: if Priority(A) &gt; Priority(B), A runs (B donsen&#x27;t).
+Rule 2: if Priority(A) = Priority(B), A&amp;B run in RR.
+The key to MLFQ scheduling: <mark class="highlight-red">How the scheduler sets priorities?</mark>
+MLFQ varies the priority of a job based on its observed behaviour.
+Example</h3><p id="aa39eef0-2219-4056-b486-8797376b1389" class="">if a job repeatedly relinquishes the CPU while waiting for input from the keyboard, MLFQ its priority high.
+if a job uses the CPU intensively for long periods of time, MLFQ will reduce its priority.
+<strong>MLFQ will try to learn about processes as they run, and thus use the history of the job to predict its future behaviour.</strong></p><figure id="43024b5d-05c3-405e-95fd-2e095e2dffd3" class="image"><a href="Scheduling/Untitled%209.png"><img style="width:222px" src="Scheduling/Untitled%209.png"/></a></figure><h2 id="f7db4087-386f-4298-adc0-b97c97a3a14c" class="">Attempt #1: How to Change Priority</h2><h3 id="944dc638-a3b5-41b1-bf0e-3380fbaba142" class="">First attempt</h3><p id="362c2db6-e37c-45fe-8be7-77499bb0c013" class="">Rule 3: When a job enters the system, it is placed at the highest priority(the topmost queue).
+Rule 4a: If a job uses up an entire time slice while running, its priority is reduced(i.e., moves down one queue).
+Rule 4b: If a job gives up the CPU before the time slice is up, it stays at the same priority level.</p><figure id="b7f8c4f8-bde5-4b1e-b1ae-0a0b963494ba" class="image"><a href="Scheduling/Untitled%2010.png"><img style="width:384px" src="Scheduling/Untitled%2010.png"/></a></figure><figure id="e862c13f-ccd4-4c05-a3b4-a90e21b4b6cf" class="image"><a href="Scheduling/Untitled%2011.png"><img style="width:605px" src="Scheduling/Untitled%2011.png"/></a></figure><p id="8b46ec98-ed7c-4ecb-9ed5-35352e1627d3" class="">Because the scheduler doesn&#x27;t know whether a job will be a short job or a long-running job, if first assume it might be a short job, thus giving the job high priority, If it is not a short job, it will slowly move down the queues.</p><figure id="a531e965-ffa8-4694-82c9-2023c13b8879" class="image"><a href="Scheduling/Untitled%2012.png"><img style="width:621px" src="Scheduling/Untitled%2012.png"/></a></figure><figure id="95b72526-09b4-44d0-8f00-548aefeae268" class="image"><a href="Scheduling/Untitled%2013.png"><img style="width:619px" src="Scheduling/Untitled%2013.png"/></a></figure><figure id="3e2f7f05-d2d5-4077-8fcb-b1f0ec3f22f1" class="image"><a href="Scheduling/Untitled%2014.png"><img style="width:614px" src="Scheduling/Untitled%2014.png"/></a></figure><figure id="b4959bc8-ed87-404d-b243-72b88c952d16" class="image"><a href="Scheduling/Untitled%2015.png"><img style="width:459px" src="Scheduling/Untitled%2015.png"/></a></figure><figure id="270a93d1-aa87-4fb2-bf44-f73571e3e0e6" class="image"><a href="Scheduling/Untitled%2016.png"><img style="width:606px" src="Scheduling/Untitled%2016.png"/></a></figure><hr id="76ad66ec-5163-4e44-95c9-18f0274a63cf"/><p id="c919b5eb-9143-4357-b5e5-4114aebc1bd2" class="">🐌아이콘 제작자: Smashicons</p><figure id="6909ca72-ded9-4d6c-8e34-e943a047ada0"><a href="https://www.flaticon.com/kr/authors/smashicons" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Smashicons 디자인의 무료 벡터 아이콘</div><div class="bookmark-description">SVG, PSD, PNG, EPS 형식 또는 웹 폰트 형태로 이 멋진 무료 아이콘들을 다운로드하세요. Flaticon은 최대의 무료 벡터 아이콘 데이터베이스입니다.</div></div><div class="bookmark-href"><img src="https://media.flaticon.com/dist/min/img/favicon.ico" class="icon bookmark-icon"/>https://www.flaticon.com/kr/authors/smashicons</div></div><img src="https://image.flaticon.com/share_sprites/author/159-smashicons_facebook.jpg" class="bookmark-image"/></a></figure></div></article></body></html>
